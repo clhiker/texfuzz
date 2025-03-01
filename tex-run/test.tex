@@ -1,0 +1,19 @@
+\font\myfont=cmr12 at 12pt  % 直接设置字体
+\myfont
+$a \leq b \neq c \approx d \cdot e$
+Hello, world!
+$\alpha + \beta = \gamma \Delta$
+{\bf Bold Text} {\it Italic Text}
+\halign{\vrule \hfil # \hfil & \hfil # \hfil \vrule \cr
+a & b \cr\noalign{\hrule}
+c & d \cr\noalign{\hrule}
+}
+$\alpha$
+
+\def\thello{Hello}
+\thello World. Whoops! \thello\ World.\par
+\thello{} World. {\it\thello} World. {\bf\thello\ } World. {\bf\thello\ }World.
+
+\item First item
+\item Second item
+\bye
