@@ -38,3 +38,8 @@ finding bug
 ## 常见命令
 - tex *.tex  编译tex
 - xdvi *.dvi 查看dvi文件
+
+- 
+- "[^"]*":
+
+{n\atop\choose HgW~o)0}
