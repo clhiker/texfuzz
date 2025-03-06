@@ -11,5 +11,7 @@ class RandomGen:
             self.tex_text += obj.gen_something() + '\n'
         return self.tex_text
 
+
 if __name__ == '__main__':
     random_gen = RandomGen()
+

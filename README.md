@@ -42,4 +42,68 @@ finding bug
 - 
 - "[^"]*":
 
-{n\atop\choose HgW~o)0}
+# PlainTex 语法规则
+### {}
+### 数学模式
+### 计数器
+
+# 差分测试
+## 差分项：[tectonic](https://github.com/tectonic-typesetting/tectonic)
+tectonic 可以在plainTex 模式下，生成 xdv/pdf 等格式文件
+```shell
+tectonic -f plain seeds.tex
+# xdv 模式
+tectonic -f plain seeds.tex --outfmt xdv
+```
+
+## 对比工具
+### diffpdf
+linux 自带（apt）安装，但是匹配太严格
+
+### diff-pdf
+较为折中的方案
+```shell
+# 构建
+sudo apt install make automake g++ libpoppler-glib-dev poppler-utils libwxgtk3.0-gt
+k3-dev -y
+git clone https://github.com/vslavik/diff-pdf.git
+cd diff-pdf
+./bootstrap
+./configure
+make
+sudo make install
+```
+diff-pdf -v 1.pdf 2.pdf
+
+
+## 差分命令
+```shell
+# 直接对比pdf
+xetex -jobname=1 seeds.tex
+tectonic -f plain seeds.tex && mv seeds.pdf 2.pdf
+diff-pdf -v 1.pdf 2.pdf #（太过精确，容易报错）
+
+# 转为图片对比图片
+pdftoppm -png 1.pdf 1
+pdftoppm -png 2.pdf 2
+perceptualdiff 1-1.png 2-1.png
+# 也可以直接对比 md5
+md5sum 1-1.png
+md5sum 2-1.png
+
+# 查看图片基础信息
+identify 2-1.png
+identify 1-1.png
+```
+
+## 统一页面格式
+```latex
+% 设置页面尺寸（A4）
+\hsize=210mm
+\vsize=297mm
+\pdfpagewidth=210mm
+\pdfpageheight=297mm
+% 设置字体（不一定需要）
+\font\myfont=cmr12
+\myfont
+```

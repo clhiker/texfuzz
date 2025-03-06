@@ -78,6 +78,7 @@ class LargeOperators(MathLatter):
 #         self.operations = ['\\pm', '\\cap', '\\vee', '\\lor', '\\mp', '\\cup', '\\wedge', '\\land', '\\setminus', '\\uplus', '\\oplus', '\\cdot', '\\sqcap', '\\ominus', '\\times', '\\sqcup', '\\otimes', '\\ast', '\\triangleleft', '\\oslash', '\\star', '\\triangleright', '\\odot', '\\diamond', '\\wr', '\\dagger', '\\circ', '\\bigcirc', '\\ddagger', '\\bullet', '\\bigtriangleup', '\\amalg', '\\div', '\\bigtriangledown']
 #
 #
+
 class PageLayout:
     def __init__(self):
         self.dimen_space = random_input.DimensionsSpacingAndGlue()
@@ -207,7 +208,7 @@ class ElementaryMathControlSequences:
         ]
         self.form_3 = [
             "\\over",
-            "\\atop"
+            "\\atop",
             "\\choose",
             "\\brace",
             "\\brack"
@@ -225,7 +226,7 @@ class ElementaryMathControlSequences:
 
     def use_form3(self, text1, text2):
         case = random.choice(self.form_3)
-        case1 = "{%s%s %s}" % (text1, case, text2)
+        case1 = "{%s %s %s}" % (text1, case, text2)
         return case1
     
     def gen_something(self):
@@ -279,12 +280,24 @@ class UsefulParametersAndConversions:
     def __init__(self):
         self.text = random_input.AnyText()
         self.number = random_input.AnyNumber()
+        self.days = [i for i in range(1, 32)]
+        self.months = [i for i in range(1, 13)]
+        self.years = [i for i in range(1900, 2030)]
         self.form1 = ['\\year', '\\month', '\\day', '\\jobname', ]
         self.form2 = ['\\romannumeral']
         self.form3 = ['\\uppercase', '\\lowercase']
 
     def use_form1(self):
-        return random.choice(self.form1)
+        case = random.choice(self.form1)
+        if case == '\\year':
+            case1 = "%s=%s" % (case, random.choice(self.years))
+        elif case == '\\month':
+            case1 = "%s=%s" % (case, random.choice(self.months))
+        elif case == '\\day':
+            case1 = "%s=%s" % (case, random.choice(self.days))
+        else:
+            case1 = case
+        return case1
 
     def use_form2(self, number):
         case1 = "%s %s" % (self.form2[0], number)
@@ -323,6 +336,9 @@ class UsefulParametersAndConversions:
 #     def use_form4(self, any_text):
 #         case1 = "%s %s %s" % (self.leaders_fill[0], any_text, self.leaders_fill[1])
 #         return case1
+#
+#     def gen_something(self):
+#         pass
 #
 # class TEXFontsAndMagnification:
 #     def __init__(self):
