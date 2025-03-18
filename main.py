@@ -67,10 +67,11 @@ class TexFuzz:
         os.system('rm seeds/*')
 
     def fuzz_tex(self):
-        # os.system('cd seeds && tex seeds.tex')
+        os.system('cd seeds && xetex test.tex')
         pass
 
 if __name__ == '__main__':
     tex_fuzz = TexFuzz()
     tex_fuzz.gen_tex_text()
-    tex_fuzz.diff_testing()
+    # tex_fuzz.diff_testing()
+    tex_fuzz.fuzz_tex()

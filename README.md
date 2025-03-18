@@ -43,9 +43,32 @@ finding bug
 - "[^"]*":
 
 # PlainTex 语法规则
-### {}
+### group 
+group is everything after an opening brace and before the matching closing brace.
+### token
+A token is a character, a control sequence, or a group.
+### control sequence
+A control sequence is anything that begins with a . It is not printed as is, it is expanded by the TeX engine according to its type.\
+### command
+A command (or function or macro) is a control sequence that may expand to text, to (re)definition of control sequences, etc.
+### primitive
+A primitive is a command that is hard coded in the TeX engine, i.e. it is not written in Plain TeX.
+### register
+A register is the TeX way to handle variables. They are limited in numbers (256 for each type of register in classic TeX, 32767 in e-TeX).
+### length
+A length is a control sequence that contains a length (a number followed by a unit). See Lengths.
+### font
+A font is a control sequence that refers to a font file. See Fonts.
+### box
+A box is an object that is made for printing. Anything that ends on the paper is a box: letters, paragraphs, pages... See Boxes.
+### glue
+A glue is a certain amount of space that is put between boxes when they are being concatenated.
+### counter
+A counter is a register containing a number. See Counters.
+
+
 ### 数学模式
-### 计数器
+
 
 # 差分测试
 ## 差分项：[tectonic](https://github.com/tectonic-typesetting/tectonic)
