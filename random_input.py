@@ -177,6 +177,220 @@ class AnyBoxRule:
         else:
             return self.any_rule()
 
+
+class AnyRelation:
+    def __init__(self):
+        self.relations = ["<", ">", "="]  # 支持的比较符号
+
+    def generate_random_relation(self):
+        """
+        生成随机比较符号
+        :return: 随机比较符号（如 "<", ">", "="
+        """
+        return random.choice(self.relations)
+
+
+class RandomTexLength:
+    def __init__(self):
+        """
+        初始化随机长度生成器
+        """
+        self.units = ["pt", "cm", "mm", "em", "ex"]  # 支持的长度单位
+
+    def gen_length(self, min_value=1, max_value=1000):
+        """
+        生成随机长度
+        :param min_value: 最小值（默认 1）
+        :param max_value: 最大值（默认 100）
+        :return: 随机长度（如 "10pt", "0.5cm"）
+        """
+        value = random.uniform(min_value, max_value)
+        unit = random.choice(self.units)
+        return f"{value:.2f}{unit}"  # 保留两位小数
+
+    import random
+
+
+class RandomMatrixGenerator:
+    def __init__(self, min_rows=2, max_rows=5, min_cols=2, max_cols=5, min_value=0, max_value=100):
+        """
+        初始化随机矩阵生成器
+        :param min_rows: 最小行数（默认 2）
+        :param max_rows: 最大行数（默认 5）
+        :param min_cols: 最小列数（默认 2）
+        :param max_cols: 最大列数（默认 5）
+        :param min_value: 元素最小值（默认 0）
+        :param max_value: 元素最大值（默认 100）
+        """
+        self.min_rows = min_rows
+        self.max_rows = max_rows
+        self.min_cols = min_cols
+        self.max_cols = max_cols
+        self.min_value = min_value
+        self.max_value = max_value
+
+    def generate_matrix(self):
+        """
+        生成随机矩阵
+        :return: 随机矩阵（列表的列表）
+        """
+        rows = random.randint(self.min_rows, self.max_rows)
+        cols = random.randint(self.min_cols, self.max_cols)
+        matrix = [[random.randint(self.min_value, self.max_value) for _ in range(cols)] for _ in range(rows)]
+        return matrix
+
+    def gen_tex_code(self):
+        """
+        生成 plain TeX 格式的矩阵代码
+        :return: plain TeX 格式的矩阵代码
+        """
+        matrix = self.generate_matrix()
+        tex_code = ""
+        for row in matrix:
+            tex_code += "  " + " & ".join(map(str, row)) + " \\cr" + " "
+
+        return tex_code
+
+
+class RandomMatrixGenerator1:
+    def __init__(self, max_rows=5, max_cols=5):
+        """
+        初始化随机矩阵生成器
+        :param max_rows: 最大行数（默认 5）
+        :param max_cols: 最大列数（默认 5）
+        """
+        self.max_rows = max_rows
+        self.max_cols = max_cols
+
+    def generate_element1(self):
+        """
+        生成随机矩阵元素
+        :return: 随机元素（数字或符号）
+        """
+        if random.choice([True, False]):
+            return str(random.randint(0, 9))  # 生成数字
+        else:
+            return random.choice(string.ascii_letters)  # 生成字母
+
+    def generate_matrix(self):
+        """
+        生成随机矩阵
+        :return: 符合 plain TeX 语法的矩阵
+        """
+        rows = random.randint(1, self.max_rows)  # 随机生成行数
+        cols = random.randint(1, self.max_cols)  # 随机生成列数
+
+        matrix = []
+        for i in range(rows):
+            row = []
+            for j in range(cols):
+                row.append(self.generate_element1())  # 生成随机元素
+            matrix.append(row)
+
+        # 将矩阵转换为 plain TeX 语法
+        tex_matrix = ""
+        for row in matrix:
+            tex_matrix += " & ".join(row) + " \\\\\n"
+
+        return tex_matrix
+
+
+class RandomMatrixGenerator2:
+    def __init__(self, min_rows=2, max_rows=5, min_cols=2, max_cols=5):
+        """
+        初始化矩阵生成器
+        :param min_rows: 最小行数（默认 2）
+        :param max_rows: 最大行数（默认 5）
+        :param min_cols: 最小列数（默认 2）
+        :param max_cols: 最大列数（默认 5）
+        """
+        self.min_rows = min_rows
+        self.max_rows = max_rows
+        self.min_cols = min_cols
+        self.max_cols = max_cols
+
+    def generate_element2(self):
+        """
+        生成随机矩阵元素
+        :return: 随机元素（数字、符号或表达式）
+        """
+        # 随机生成数字、符号或简单表达式
+        options = [
+            str(random.randint(0, 9)),  # 数字
+            random.choice(['+', '-', '\\times', '\\div']),  # 符号
+            f"{random.randint(1, 9)}^{random.randint(1, 9)}",  # 指数
+            f"\\sqrt{{{random.randint(1, 9)}}}"  # 根号
+        ]
+        return random.choice(options)
+
+    def generate_matrix2(self):
+        """
+        生成随机矩阵
+        :return: 符合 plain TeX 语法的矩阵
+        """
+        # 随机生成行数和列数
+        rows = random.randint(self.min_rows, self.max_rows)
+        cols = random.randint(self.min_cols, self.max_cols)
+
+        # 生成列标签
+        col_labels = [f"c_{i + 1}" for i in range(cols)]
+
+        # 生成行标签
+        row_labels = [f"r_{i + 1}" for i in range(rows)]
+
+        # 生成矩阵内容
+        matrix_content = []
+        for i in range(rows):
+            row = [self.generate_element2() for _ in range(cols)]
+            matrix_content.append(row)
+
+        # 构建 plain TeX 矩阵
+        tex_matrix = ""
+        # 添加列标签
+        tex_matrix += " & " + " & ".join(col_labels) + " \\cr\n"
+        # 添加行标签和矩阵内容
+        for i in range(rows):
+            tex_matrix += row_labels[i] + " & " + " & ".join(matrix_content[i]) + " \\cr\n"
+
+        return tex_matrix
+
+
+class RandomEquationGenerator:
+    def __init__(self, min_value=0, max_value=10, operators=None):
+        """
+        初始化随机公式生成器
+        :param min_value: 常数的最小值（默认 0）
+        :param max_value: 常数的最大值（默认 10）
+        :param operators: 支持的数学运算符（默认 +, -, *, /）
+        """
+        self.min_value = min_value
+        self.max_value = max_value
+        self.operators = operators if operators else ["+", "-", "*", "/"]
+
+    def generate_equation(self):
+        """
+        生成随机数学公式
+        :return: 随机生成的数学公式（字符串）
+        """
+        variables = ["x", "y", "z"]
+        var1 = random.choice(variables)
+        var2 = random.choice(variables)
+        operator = random.choice(self.operators)
+        constant = random.randint(self.min_value, self.max_value)
+        equation = f"{var1} {operator} {var2} = {constant}"
+        return equation
+
+    def gen_math(self, equation):
+        """
+        生成 plain TeX 格式的公式代码
+        :param equation: 数学公式（字符串）
+        :param equation_number: 公式编号（整数）
+        :return: plain TeX 格式的公式代码
+        """
+        tex_code = f"{equation}"
+        return tex_code
+
+
 if __name__ == '__main__':
     test_any_box_rule = AnyBoxRule()
     # 测试随机生成 box

@@ -41,7 +41,7 @@ class SymbolsOfTypeOrd(MathLatter):
         '''
         self.symbols = [
             '\\aleph', '\\prime', '\\forall', '\\hbar', '\\emptyset', '\\exists',
-            '\\imath', '\\nabla', '\\neg', '\\lnot', '\\surd', '\\flat',
+            '\\imath', '\\nabla', '\\neg', '\\lnot', '\\jmath', '\\surd', '\\flat',
             '\\ell', '\\top', '\\natural', '\\wp', '\\bot', '\\sharp',
             '\\Re', '\\clubsuit', '\\Im', '\\angle', '\\diamondsuit', '\\partial',
             '\\triangle', '\\heartsuit', '\\infty', '\\backslash', '\\spadesuit'
@@ -73,11 +73,26 @@ class LargeOperators(MathLatter):
     def gen_something(self):
         return "$\n"+ self.advance_use('x', 'y', 3) +"$"
 
-# class BinaryOperations(MathLatter):
-#     def __init__(self):
-#         self.operations = ['\\pm', '\\cap', '\\vee', '\\lor', '\\mp', '\\cup', '\\wedge', '\\land', '\\setminus', '\\uplus', '\\oplus', '\\cdot', '\\sqcap', '\\ominus', '\\times', '\\sqcup', '\\otimes', '\\ast', '\\triangleleft', '\\oslash', '\\star', '\\triangleright', '\\odot', '\\diamond', '\\wr', '\\dagger', '\\circ', '\\bigcirc', '\\ddagger', '\\bullet', '\\bigtriangleup', '\\amalg', '\\div', '\\bigtriangledown']
-#
-#
+
+class BinaryOperations(MathLatter):
+    def __init__(self):
+        self.operations = ['\\pm', '\\cap', '\\vee', '\\lor', '\\mp',
+                           '\\cup', '\\wedge', '\\land', '\\setminus', '\\uplus',
+                           '\\oplus', '\\cdot', '\\sqcap', '\\ominus', '\\times',
+                           '\\sqcup', '\\otimes', '\\ast', '\\triangleleft', '\\oslash',
+                           '\\star', '\\triangleright', '\\odot', '\\diamond', '\\wr',
+                           '\\dagger', '\\circ', '\\bigcirc', '\\ddagger', '\\bullet',
+                           '\\bigtriangleup', '\\amalg', '\\div', '\\bigtriangledown'
+                           ]
+
+    def advance_use(self, _1, _2, nums):
+        op_tex = ''
+        for i in range(nums):
+            op_tex += "%s %s %s" % (_1, random.choice(self.operations), _2) + '\n'
+        return op_tex
+
+    def gen_something(self):
+        return "$\n" + self.advance_use('A', 'B', 3) + "$"
 
 class PageLayout:
     def __init__(self):
@@ -106,7 +121,9 @@ class Relations(MathLatter):
             "\\supseteq", "\\cong", "\\sqsubseteq", "\\sqsupseteq", "\\bowtie", "\\in",
             "\\notin", "\\ni", "\\owns", "\\vdash", "\\dashv", "\\models",
             "\\smile", "\\mid", "\\doteq", "\\frown", "\\parallel", "\\perp",
-            "\\propto", "\\not\\equiv", "\\notin", "\\ne"
+            "\\propto", "\\not\\equiv", "\\notin", "\\ni", "\\owns", "\\vdash", "\\dashv",
+            "\\models", "\\smile", "\\mid", "\\doteq", "\\frown", "\\parallel", "\\perp",
+             "\\propto", "\\notequiv", "\\notin", "\\ne"
         ]
         ## \not 否定的用法？
 
@@ -174,8 +191,8 @@ class Accents:
     def __init__(self):
         self.any_text = random_input.AnyText()
         self.accents = [
-             "\\hat",  "\\tilde",  "\\check",  "\\acute",  "\\grave",
-             "\\dot",  "\\breve",  "\\bar",  "\\vec"
+             "\\hat", "\\widehat", "\\tilde", "\\widetilde",  "\\check",  "\\acute",  "\\grave",
+             "\\dot", "\\ddot",  "\\breve",  "\\bar",  "\\vec"
         ] # 可以嵌套使用
 
     def use_one(self, text):
@@ -679,6 +696,48 @@ class OverfullBoxes:
         return tex_text
 
 
+# class IndentationAndItemizedLists:
+#     def __init__(self):
+#         self.form1 = [
+#             "\\item", "\\itemitem"
+#         ]
+#         self.form2 = [
+#             "\\indent", "\\noindent", "\\narrower"
+#         ]
+#         self.form3 = [
+#             "\\parindent", "\\displayindent", "\\leftskip", "\\rightskip", "\\hangident",
+#         ]
+#         self.form4 = [
+#             "\\hangafter", "\\parshape"
+#         ]
+#
+#     def use_form1(self, text):
+#         case = random.choice(self.form1)
+#         case1 = "%s { %s }" % (case, text)
+#         return case1
+#
+#     def use_form2(self):
+#         case = random.choice(self.form2)
+#         return case
+#
+#     def use_form3(self, any_dimen):
+#         case = random.choice(self.form3)
+#         case1 = "%s = %s" % (case, any_dimen)
+#         return case1
+#
+#     def use_form4(self, any_number):
+#         case = random.choice(self.form4)
+#         case1 = "%s = %s" % (case, any_number)
+#         return case1
+#
+#     def gen_something(self):
+#         tex_text = ''
+#         tex_text += self.use_form1(self.text.simple_string()) + '\n'
+#         tex_text += self.use_form2() + '\n'
+#         tex_text += self.use_form3(self.dimen_space.gen_any_stand_dimen()) + '\n'
+#         tex_text += self.use_form4(self.number.uint_number()) + '\n'
+#         return tex_text
+
 class IndentationAndItemizedLists:
     def __init__(self):
         self.indentation = ["\\indent",  "\\noindent",  "\\parindent", "\\displayindent",  "\\leftskip",
@@ -720,83 +779,470 @@ class IndentationAndItemizedLists:
         tex_text += self.use_form4(self.numbers.uint_number()) + '\n'
         return tex_text
 
+
 class HeadersFootersAndPageNumbers:
     def __init__(self):
-        self.page_numbers = {
-             "\\nopagenumbers",  "\\pageno",  "\\folio",
-             "\\footline",  "\\headline"
-        }
+        self.form1 = [
+            "\\nopagenumbers"
+        ]
+        self.form2 = [
+            "\\pageno", "\\folio"
+        ]
+        self.form3 = [
+            "\\footline", "\\headline"
+        ]
 
-# class MacroDefinitions:
-#     def __init__(self):
-#         self.macro_definitions = {
-#             "def": "\\def\\cs{〈replacement text〉}", "let": "\\let\\cs=〈token〉",
-#             "longdef": "\\long\\def", "outerdef": "\\outer\\def", "globaldef": "\\global\\def",
-#             "edef": "\\edef", "xdef": "\\xdef", "noexpand": "\\noexpand", "expandafter": "\\expandafter"
-#         }
-#
-# class Conditionals:
-#     def __init__(self):
-#         self.conditionals = {
-#             "if": "\\if〈condition〉〈true text〉\\else〈false text〉\\fi", "ifnum": "\\ifnum〈num1〉〈relation〉〈num2〉",
-#             "ifdim": "\\ifdim〈dimen1〉〈relation〉〈dimen2〉", "ifodd": "\\ifodd〈num〉", "ifmmode": "\\ifmmode",
-#             "ifx": "\\ifx〈token1〉〈token2〉", "ifdim": "\\ifdim〈dim1〉〈dim2〉", "ifeof": "\\ifeof〈number〉",
-#             "iftrue": "\\iftrue", "iffalse": "\\iffalse", "ifcase": "\\ifcase〈number〉〈text0〉\\or〈text1〉\\or· · ·"
-#         }
-#
+    def use_form1(self):
+        case = random.choice(self.form1)
+        return case
+
+    def use_form2(self, any_number):
+        case = random.choice(self.form2)
+        case1 = "%s = %s" % (case, any_number)
+        return case1
+
+    def use_form3(self, text):
+        case1 = "%s = %s " % (self.form2[1], text)
+        return case1
+
+    def use_form4(self, text):
+        case = random.choice(self.form3)
+        case1 = "%s = {%s}" % (case, text)
+        return case1
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1() + '\n'
+        tex_text += self.use_form2(self.number.uint_number()) + '\n'
+        tex_text += self.use_form3(self.text.simple_string()) + '\n'
+        tex_text += self.use_form4(self.text.simple_string()) + '\n'
+        return tex_text
+
+class MacroDefinitions:
+    def __init__(self):
+        self.form1 = [
+            "\\def", "gdef", "edef", "xdef"
+        ]
+        self.form2 = [
+            "\\cs", "\\let"
+        ]
+        self.form3 = [
+            "\\long", "\\outer", "global"
+        ]
+        self.form4 = [
+            "\\noexpand"
+        ]
+        self.form5 = [
+            "\\expandafter"
+        ]
+        self.form6 = [
+            "\\futurelet"
+        ]
+        self.form7 = [
+            "\\csname", "\\endcsname"
+        ]
+        self.form8 = [
+            "\\string", "\\"
+        ]
+        self.form9 = [
+            "\\number"
+        ]
+
+    def use_form1(self, any_macro):
+        case = random.choice(self.form1)
+        case1 = "%s %s" % (case, any_macro)
+        return case1
+
+    def use_form2(self, text):
+        case1 = "%s %s = %s" % (self.form2[1], self.form2[0], text)
+        return case1
+
+    def use_form3(self, any_macro):
+        case = random.choice(self.form3)
+        case1 = "%s %s %s" % (case, self.form1[0], any_macro)
+        return case1
+
+    def use_form4(self):
+        case1 = "\\def\\foo{Hello, World!}\\n %s\\foo" % (self.form4[0])
+        return case1
+
+    def use_form5(self):
+        case1 = "\\def\\a{Hello}\\def\\b{\\a}%s\\b\\relax" % (self.form5[0])
+        return case1
+
+    def use_form6(self):
+        case1 = "%s\\next\\tokenA\\tokenB" % (self.form6[0])
+        return case1
+
+    def use_form7(self, text):
+        case1 = "%s %s %s" % (self.form7[0], text, self.form7[1])
+        return case1
+
+    def use_form8(self, text):
+        case1 = "%s%s%s" % (self.form8[0], self.form8[1], text)
+        return case1
+
+    def use_form9(self, any_number):
+        case1 = "%s%s" % (self.form9, any_number)
+        return case1
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1(self.macro.gen_macro()) + '\n'
+        tex_text += self.use_form2(self.text.simple_string()) + '\n'
+        tex_text += self.use_form3(self.macro.gen_macro()) + '\n'
+        tex_text += self.use_form4() + '\n'
+        tex_text += self.use_form5() + '\n'
+        tex_text += self.use_form6() + '\n'
+        tex_text += self.use_form7(self.text.simple_string()) + '\n'
+        tex_text += self.use_form8(self.text.simple_string()) + '\n'
+        tex_text += self.use_form9(self.number.uint_number()) + '\n'
+
+        return tex_text
 
 
-#
-# class HorizontalSpacing:
-#     def __init__(self):
-#         self.spacing = {
-#             "quad": "\\quad", "qquad": "\\qquad", "hskip": "\\hskip〈glue〉", "hfil": "\\hfil",
-#             "hfill": "\\hfill", "hfilneg": "\\hfilneg", "thinspace": "\\thinspace", "enspace": "\\enspace"
-#         }
-#
-# class VerticalSpacing:
-#     def __init__(self):
-#         self.spacing = {
-#             "vskip": "\\vskip〈glue〉", "vfil": "\\vfil", "vfill": "\\vfill", "strut": "\\strut",
-#             "phantom": "\\phantom{〈text〉}", "vphantom": "\\vphantom{〈text〉}", "hphantom": "\\hphantom{〈text〉}"
-#         }
-#
-# class SkipSpaceBetweenLines:
-#     def __init__(self):
-#         self.spacing = {
-#             "smallskip": "\\smallskip", "medskip": "\\medskip", "bigskip": "\\bigskip",
-#             "smallbreak": "\\smallbreak", "medbreak": "\\medbreak", "bigbreak": "\\bigbreak",
-#             "filbreak": "\\filbreak"
-#         }
-#
-# class SetLineSpacing:
-#     def __init__(self):
-#         self.spacing = {
-#             "baselineskip": "\\baselineskip = 〈glue〉", "single_space": "\\baselineskip = 12pt",
-#             "one_and_half_space": "\\baselineskip = 18pt", "double_space": "\\baselineskip = 24pt",
-#             "openup": "\\openup〈dimen〉", "jot": "1\\jot = 3pt"
-#         }
-#
-# class AllowUnjustifiedLines:
-#     def __init__(self):
-#         self.justification = {
-#             "raggedright": "\\raggedright", "raggedbottom": "\\raggedbottom"
-#         }
-#
-# class BracesAndMatrices:
-#     def __init__(self):
-#         self.matrices = {
-#             "matrix": "\\matrix", "pmatrix": "\\pmatrix", "bordermatrix": "\\bordermatrix",
-#             "overbrace": "\\overbrace", "underbrace": "\\underbrace"
-#         }
-#
-# class DisplayedEquations:
-#     def __init__(self):
-#         self.equations = {
-#             "eqno": "\\eqno", "leqno": "\\leqno", "eqalign": "\\eqalign", "eqalignno": "\\eqalignno",
-#             "leqalignno": "\\leqalignno", "displaylines": "\\displaylines", "cases": "\\cases",
-#             "noalign": "\\noalign", "openup": "\\openup〈dimen〉"
-#         }
+class Conditionals:
+    def __init__(self):
+        self.form1 = [
+            "\\if", "\\else", "\\fi"
+        ]
+        self.form2 = [
+            "\\ifnum"
+        ]
+        self.form3 = [
+            "\\ifdim"
+        ]
+        self.form4 = [
+            "\\ifodd", "\\ifeof"
+        ]
+        self.form5 = [
+            "\\ifmmode", "\\iftrue", "\\iffalse"
+        ]
+        self.form6 = [
+            "\\if", "\\ifx"
+        ]
+        self.form7 = [
+            "\\ifdim"
+        ]
+        self.form8 = [
+            "\\ifcase", "\\or", "\\else", "\\fi"
+        ]
+        self.form9 = [
+            "\\loop", "\\if", "\\repeat"
+        ]
+        self.form10 = [
+            "\\newif", "\\ifblob", "\\blobtrue", "\\blobfalse"
+        ]
+
+    def use_form1(self, text1, text2, text3):
+        case1 = "%s %s %s %s %s %s" % (self.form1[0], text1, text2, self.form1[1], text3, self.form1[2])
+        return case1
+
+    def use_form2(self, any_number1, any_number2, any_relation):
+        case1 = "%s %s %s %s" % (self.form2, any_number1, any_relation, any_number2)
+        return case1
+
+    def use_form3(self, any_dimen1, any_dimen2, any_relation):
+        case1 = "%s %s %s %s " % (self.form3, any_dimen1, any_relation, any_dimen2)
+        return case1
+
+    def use_form4(self, any_number):
+        case = random.choice(self.form4)
+        case1 = "%s %s" % (case, any_number)
+        return case1
+
+    def use_form5(self):
+        case = random.choice(self.form5)
+        case1 = "%s" % (case)
+        return case1
+
+    def use_form6(self, text1, text2):
+        case = random.choice(self.form6)
+        case1 = "%s %s %s" % (case, text1, text2)
+        return case1
+
+    def use_form7(self, any_dimen1, any_dimen2):
+        case1 = "%s %s %s" % (self.form7, any_dimen1, any_dimen2)
+        return case1
+
+    def use_form8(self, any_number, text1, text2, text3):
+        case1 = "%s %s %s %s %s %s %s %s" % (
+        self.form8[0], any_number, text1, self.form8[1], text2, self.form8[2], text3, self.form8[3])
+        return case1
+
+    def use_form9(self, text1, text2):
+        case1 = "%s %s %s %s %s" % (self.form9[0], text1, self.form9[1], text2, self.form9[2])
+        return case1
+
+    def use_form10(self):
+        case = random.choice(self.form10[2], self.form10[3])
+        case1 = "%s %s %s " % (self.form10[0], self.form10[1], case)
+        return case1
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1(self.text.simple_string(), self.text.simple_string(),
+                                   self.text.simple_string()) + '\n'
+        tex_text += self.use_form2(self.number.uint_number(), self.number.uint_number(),
+                                   self.rel.generate_random_relation()) + '\n'
+        tex_text += self.use_form3(self.dimen_space.gen_any_stand_dimen(), self.dimen_space.gen_any_stand_dimen(),
+                                   self.rel.generate_random_relation()) + '\n'
+        tex_text += self.use_form4(self.number.uint_number()) + '\n'
+        tex_text += self.use_form5() + '\n'
+        tex_text += self.use_form6(self.text.simple_string(), self.text.simple_string()) + '\n'
+        tex_text += self.use_form7(self.dimen_space.gen_any_stand_dimen(),
+                                   self.dimen_space.gen_any_stand_dimen()) + '\n'
+        tex_text += self.use_form8(self.number.uint_number(), self.text.simple_string(), self.text.simple_string(),
+                                   self.text.simple_string()) + '\n'
+        tex_text += self.use_form9(self.text.simple_string(), self.text.simple_string()) + '\n'
+        tex_text += self.use_form10() + '\n'
+
+        return tex_text
+
+
+class HorizontalSpacing:
+    def __init__(self):
+        self.form1 = [
+            "\\quad", "\\qquad", "\\thinspace", "\\enspace", "\\enskip",
+            "\\hfill", "\\hfill", "\\hfilneg",
+            "\\thickspace", "\\>", "\\medspace", "\\;", "\\!", "\\,", "\\negthinspace"
+        ]
+        self.form2 = [
+            "\\hskip", "\\mskip"
+        ]
+
+    def use_form1(self):
+        case = random.choice(self.form1)
+        case1 = "%s" % (case)
+        return case1
+
+    def use_form2(self, any_length):
+        case = random.choice(self.form2)
+        case1 = "%s %s" % (case, any_length)
+        return case1
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1() + '\n'
+        tex_text += self.use_form2(self.leng.gen_length()) + '\n'
+
+        return tex_text
+
+
+class VerticalSpacing:
+    def __init__(self):
+        self.form1 = [
+            "\\vfill", "\\vfil", "\\strut"
+        ]
+        self.form2 = [
+            "\\vskip"
+        ]
+        self.form3 = [
+            "\\phantom", "\\vphantom", "\\hphantom", "\\smash"
+        ]
+        self.form4 = [
+            "\\raise", "\\lower", "\\moveleft", "\\moveright", "\\hbox", "\\vbox"
+        ]
+
+    def use_form1(self):
+        case = random.choice(self.form1)
+        case1 = "%s" % (case)
+        return case1
+
+    def use_form2(self, any_length):
+        case = random.choice(self.form2)
+        case1 = "%s %s" % (case, any_length)
+        return case1
+
+    def use_form3(self, text):
+        case = random.choice(self.form3)
+        case1 = "%s {%s}" % (case, text)
+        return case1
+
+    def use_form4(self, any_dimen, text):
+        case1 = random.choice(self.form4[0], self.form4[1], self.form4[2], self.form4[3])
+        case2 = random.choice(self.form4[4], self.form4[5])
+        case3 = "%s %s %s {%s}" % (case1, any_dimen, case2, text)
+        return case3
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1() + '\n'
+        tex_text += self.use_form2(self.leng.gen_length()) + '\n'
+        tex_text += self.use_form3(self.text.simple_string()) + '\n'
+        tex_text += self.use_form4(self.dimen_space.gen_any_stand_dimen(), self.text.simple_string()) + '\n'
+
+        return tex_text
+
+class SkipSpaceBetweenLines:
+    def __init__(self):
+        self.form1 = [
+            "\\smallskip", "\\medskip", "\\bigskip",
+            "\\smallbreak", "\\medbreak", "\\bigbreak",
+            "\\filbreak"
+        ]
+
+    def use_form1(self):
+        case = random.choice(self.form1)
+        case1 = "%s" % (case)
+        return case1
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1() + '\n'
+
+        return tex_text
+
+
+class SetLineSpacing:
+    def __init__(self):
+        self.form1 = [
+            "\\baselineskip", "\\jot"
+        ]
+        self.form2 = [
+            "\\openup"
+        ]
+
+    def use_form1(self, any_length):
+        case = random.choice(self.form1)
+        case1 = "%s = %s" % (case, any_length)
+        return case1
+
+    def use_form2(self, any_length):
+        case1 = "%s %s" % (self.form2, any_length)
+        return case1
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1(self.leng.gen_length()) + '\n'
+        tex_text += self.use_form2(self.leng.gen_length()) + '\n'
+
+        return tex_text
+
+
+class AllowUnjustifiedLines:
+    def __init__(self):
+        self.form1 = [
+            "\\raggedright", "\\raggedbottom"
+        ]
+
+    def use_form1(self):
+        case = random.choice(self.form1)
+        case1 = "%s" % (case)
+        return case1
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1() + '\n'
+
+        return tex_text
+
+class BracesAndMatrices:
+    def __init__(self):
+        self.form1 = [
+            "\\matrix"
+        ]
+        self.form2 = [
+            "\\pmatrix"
+        ]
+        self.form3 = [
+            "\\bordermatrix"
+        ]
+        self.form4 = [
+            "\\overbrace"
+        ]
+        self.form5 = [
+            "\\underbrace"
+        ]
+
+    def use_form1(self, any_matrix):
+        case1 = "%s {%s}" % (self.form1, any_matrix)
+        return case1
+
+    def use_form2(self, any_matrix):
+        case1 = "%s {%s}" % (self.form2, any_matrix)
+        return case1
+
+    def use_form3(self, any_matrix):
+        case1 = "%s {%s}" % (self.form3, any_matrix)
+        return case1
+
+    def use_form4(self, text):
+        case1 = "%s {%s}" % (self.form4, text)
+        return case1
+
+    def use_form5(self, text1, text2):
+        case1 = "%s {%s}_{%s}" % (self.form5, text1, text2)
+        return case1
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1(self.generatorm.gen_tex_code()) + '\n'
+        tex_text += self.use_form2(self.generatorpm.generate_matrix()) + '\n'
+        tex_text += self.use_form3(self.generatorpb.generate_matrix2()) + '\n'
+        tex_text += self.use_form4(self.text.simple_string()) + '\n'
+        tex_text += self.use_form5(self.text.simple_string(), self.text.simple_string()) + '\n'
+
+        return tex_text
+
+
+class DisplayedEquations:
+    def __init__(self):
+        self.form1 = [
+            "\\eqno", "\\leqno"
+        ]
+        self.form2 = [
+            "\\eqalign"
+        ]
+        self.form3 = [
+            "\\eqalignno", "\\leqalignno"
+        ]
+        self.form4 = [
+            "\\displaylines"
+        ]
+        self.form5 = [
+            "\\cases"
+        ]
+        self.form6 = [
+            "\\noalign"
+        ]
+
+    def use_form1(self, any_math, text):
+        case = random.choice(self.form1)
+        case1 = "%s %s %s" % (any_math, case, text)
+        return case1
+
+    def use_form2(self, any_formula):
+        case1 = "%s {%s}" % (self.form2, any_formula)
+        return case1
+
+    def use_form3(self, any_formula):
+        case = random.choice(self.form3)
+        case1 = "%s {%s}" % (case, any_formula)
+        return case1
+
+    def use_form4(self, any_formula):
+        case1 = "%s {%s}" % (self.form4, any_formula)
+        return case1
+
+    def use_form5(self, any_piece):
+        case1 = "%s {%s}" % (self.form5, any_piece)
+        return case1
+
+    def use_form6(self, text):
+        case1 = "%s {%s}" % (self.form6, text)
+        return case1
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1(self.reg.gen_math(self.reg.generate_equation()), self.text.simple_string()) + '\n'
+        tex_text += self.use_form2(self.rmfg.gen_formula()) + '\n'
+        tex_text += self.use_form3(self.afg.gen_formula1()) + '\n'
+        tex_text += self.use_form4(self.rfg.gen_formula_block()) + '\n'
+        tex_text += self.use_form5(self.piece.gen_piecewise_function()) + '\n'
+        tex_text += self.use_form6(self.text.simple_string()) + '\n'
+
+        return tex_text
 
 
 if __name__ == '__main__':

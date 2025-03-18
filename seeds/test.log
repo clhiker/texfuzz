@@ -1,0 +1,20 @@
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xetex 2025.2.21)  12 MAR 2025 19:57
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**test.tex
+(./test.tex
+Underfull \hbox (badness 10000) detected at line 14
+ \tenrm .e 
+
+\hbox(4.30554+0.0)x227.62204, glue set 64.12033
+.\glue 3.33333 plus 1.66666 minus 1.11111
+.\tenrm .
+.\tenrm e
+.\glue 3.33333 plus 1.66666 minus 1.11111
+
+
+{BA7RRI03} \par \hangindent \parindent \indent \hbox to\z@ {\hss d\kern .5em }\
+ignorespaces  \par \indent \hangindent 2\parindent \indent \hbox to\z@ {\hss u\
+kern .5em }\ignorespaces 29Z  [1] )
+Output written on test.pdf (1 page).
