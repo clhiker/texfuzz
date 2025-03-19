@@ -297,6 +297,7 @@ class UsefulParametersAndConversions:
     def __init__(self):
         self.text = random_input.AnyText()
         self.number = random_input.AnyNumber()
+        self.dimen_space = random_input.DimensionsSpacingAndGlue()
         self.days = [i for i in range(1, 32)]
         self.months = [i for i in range(1, 13)]
         self.years = [i for i in range(1900, 2030)]
