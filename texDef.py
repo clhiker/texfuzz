@@ -686,6 +686,7 @@ class OverfullBoxes:
             "\\hfuzz", "\\vfuzz", "\\overfullrule"
         ]
         self.dimen_space = random_input.DimensionsSpacingAndGlue()
+
     def use_form1(self, dimen):
         case = random.choice(self.boxes)
         case1 = f"{case}={dimen} "
