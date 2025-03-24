@@ -404,3 +404,248 @@ if __name__ == '__main__':
     # 测试随机生成 box 和 rule 的组合
     print("\nRandom Box with Rule:")
     print(test_any_box_rule.any_box_rule())
+
+
+class RandomMathFormulaGenerator:
+    def __init__(self, max_terms=5):
+        """
+        初始化随机数学公式生成器
+        :param max_terms: 每行最大项数（默认 5）
+        """
+        self.max_terms = max_terms
+
+    def generate_term(self):
+        """
+        生成随机数学项（数字、符号或表达式）
+        :return: 随机生成的数学项
+        """
+        # 随机生成数字、符号或表达式
+        choices = [
+            str(random.randint(0, 9)),  # 数字
+            random.choice(['+', '-', '\\times', '\\div']),  # 符号
+            random.choice(string.ascii_letters),  # 字母
+            f"\\frac{{{random.randint(1, 9)}}}{{{random.randint(1, 9)}}}",  # 分数
+            f"\\sqrt{{{random.randint(1, 9)}}}"  # 平方根
+        ]
+        return random.choice(choices)
+
+    def gen_formula(self):
+        """
+        生成随机数学公式
+        :param num_lines: 公式的行数（默认 3）
+        :return: 符合 plain TeX 语法的数学公式
+        """
+        formula = []
+        for _ in range(3):
+            # 随机生成每行的项数
+            num_terms = random.randint(1, self.max_terms)
+            line = []
+            for _ in range(num_terms):
+                line.append(self.generate_term())
+            # 随机选择一个对齐点（用 & 标记）
+            if len(line) > 1:
+                align_pos = random.randint(0, len(line) - 1)
+                line[align_pos] = f"& {line[align_pos]}"
+            formula.append(" ".join(line))
+        # 将公式转换为 plain TeX 语法
+        tex_formula = " \\cr\n".join(formula) + "\n}"
+        return tex_formula
+    
+
+
+class AlignedFormulaGenerator:
+    def __init__(self, max_formulas=5):
+        """
+        初始化公式生成器
+        :param max_formulas: 最大公式行数（默认 5）
+        """
+        self.max_formulas = max_formulas
+
+    def generate_expression(self):
+        """
+        生成随机数学表达式
+        :return: 随机生成的数学表达式
+        """
+        # 随机生成数字、变量或运算符
+        options = [
+            str(random.randint(0, 9)),  # 数字
+            random.choice(string.ascii_lowercase),  # 变量
+            random.choice(['+', '-', '\\times', '\\div'])  # 运算符
+        ]
+        return random.choice(options)
+
+    def gen_formula1(self, with_number=True):
+        """
+        生成随机对齐公式
+        :param with_number: 是否为公式添加编号
+        :return: 符合 plain TeX 语法的对齐公式
+        """
+        # 随机生成公式行数
+        num_formulas = random.randint(1, self.max_formulas)
+
+        # 生成公式内容
+        formulas = []
+        for i in range(num_formulas):
+            left = self.generate_expression()  # 左边表达式
+            right = self.generate_expression()  # 右边表达式
+            formula = f"{left} = {right}"  # 使用 = 对齐
+            formulas.append(formula)
+
+        # 构建 plain TeX 公式
+       
+        for i, formula in enumerate(formulas):
+            if with_number:
+                tex_formula += f"  {formula} & ({i+1})\\cr\n"  # 添加编号
+            else:
+                tex_formula += f"  {formula} \\cr\n"  # 无编号
+     
+        return tex_formula
+    
+
+
+
+class RandomFormulaGenerator:
+    def __init__(self, min_lines=1, max_lines=5):
+        """
+        初始化公式生成器
+        :param min_lines: 最小行数（默认 1）
+        :param max_lines: 最大行数（默认 5）
+        """
+        self.min_lines = min_lines
+        self.max_lines = max_lines
+
+    def generate_formula2(self):
+        """
+        随机生成一个公式
+        :return: 随机生成的公式
+        """
+        # 随机生成公式类型
+        formula_types = [
+            lambda: f"{random.randint(1, 9)} + {random.randint(1, 9)} = {random.randint(2, 18)}",  # 加法
+            lambda: f"{random.randint(1, 9)} - {random.randint(1, 9)} = {random.randint(-8, 8)}",  # 减法
+            lambda: f"{random.randint(1, 9)} \\times {random.randint(1, 9)} = {random.randint(1, 81)}",  # 乘法
+            lambda: f"\\frac{{{random.randint(1, 9)}}}{{{random.randint(1, 9)}}}",  # 分数
+            lambda: f"\\sqrt{{{random.randint(1, 9)}}}",  # 平方根
+            lambda: f"({random.randint(1, 9)} + {random.randint(1, 9)})^2",  # 平方
+        ]
+        return random.choice(formula_types)()
+
+    def gen_formula_block(self):
+        """
+        生成多行公式，用 \cr 分隔
+        :return: 符合 plain TeX 语法的公式块
+        """
+        num_lines = random.randint(self.min_lines, self.max_lines)
+        formulas = [self.generate_formula2() for _ in range(num_lines)]
+        return " \\cr\n".join(formulas)
+    
+
+
+
+
+
+class RandomPiecewiseFunctionGenerator:
+    def __init__(self, min_value=0, max_value=10):
+        """
+        初始化分段函数生成器
+        :param min_value: 条件的最小值（默认 0）
+        :param max_value: 条件的最大值（默认 10）
+        """
+        self.min_value = min_value
+        self.max_value = max_value
+
+    def generate_condition(self):
+        """
+        生成随机条件
+        :return: 随机条件（字符串）
+        """
+        operators = ["<", ">", "<=", ">=", "="]
+        variable = "x"
+        value = random.randint(self.min_value, self.max_value)
+        operator = random.choice(operators)
+        return f"{variable} {operator} {value}"
+
+    def generate_result(self):
+        """
+        生成随机结果
+        :return: 随机结果（字符串）
+        """
+        return str(random.randint(self.min_value, self.max_value))
+
+    def gen_piecewise_function(self):
+        """
+        生成分段函数
+        :param num_pairs: 条件-结果对的数量
+        :return: 符合 plain TeX 语法的分段函数
+        """
+        pairs = []
+        for _ in range(3):
+            condition = self.generate_condition()
+            result = self.generate_result()
+            pairs.append(f"{condition} & {result}")
+        return " \\cr\n".join(pairs)
+
+
+
+class RandomMacroGenerator:
+    def __init__(self, min_params=0, max_params=3, min_content_length=1, max_content_length=5):
+        """
+        初始化宏生成器
+        :param min_params: 最小参数数量（默认 0）
+        :param max_params: 最大参数数量（默认 3）
+        :param min_content_length: 定义内容最小长度（默认 1）
+        :param max_content_length: 定义内容最大长度（默认 5）
+        """
+        self.min_params = min_params
+        self.max_params = max_params
+        self.min_content_length = min_content_length
+        self.max_content_length = max_content_length
+
+    def generate_macro_name(self):
+        """
+        生成随机宏名称
+        :return: 随机生成的宏名称
+        """
+        # 随机生成宏名称
+        prefix = random.choice(["my", "custom", "new", "define"])
+        suffix = random.choice(["command", "macro", "func", "var"])
+        return f"\\{prefix}{suffix}"
+
+    def generate_parameter_text(self):
+        """
+        生成随机参数文本
+        :return: 随机生成的参数文本
+        """
+        num_params = random.randint(self.min_params, self.max_params)
+        params = [f"#{i+1}" for i in range(num_params)]
+        return "".join(params)
+
+    def generate_definition_content(self):
+        """
+        生成随机定义内容
+        :return: 随机生成的定义内容
+        """
+        # 随机生成定义内容
+        content_length = random.randint(self.min_content_length, self.max_content_length)
+        content = []
+        for _ in range(content_length):
+            content.append(random.choice([
+                f"Process parameter: {random.choice(['#1', '#2', '#3'])}",
+                "Perform some operation",
+                "Return a value",
+                "Print a message"
+            ]))
+        return "\n  ".join(content)
+
+    def gen_macro(self):
+        """
+        生成随机宏定义
+        :return: 符合 plain TeX 语法的宏定义
+        """
+        macro_name = self.generate_macro_name()
+        parameter_text = self.generate_parameter_text()
+        definition_content = self.generate_definition_content()
+
+        # 构建宏定义
+        macro_definition = f"{macro_name}{parameter_text}{{\n  {definition_content}\n}}"
+        return macro_definition

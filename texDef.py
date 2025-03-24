@@ -711,6 +711,9 @@ class OverfullBoxes:
 #         self.form4 = [
 #             "\\hangafter", "\\parshape"
 #         ]
+#         self.text = random_input.AnyText()
+#         self.number = random_input.AnyNumber()
+#         self.dimen_space = random_input.DimensionsSpacingAndGlue()
 #
 #     def use_form1(self, text):
 #         case = random.choice(self.form1)
@@ -792,6 +795,9 @@ class HeadersFootersAndPageNumbers:
         self.form3 = [
             "\\footline", "\\headline"
         ]
+        self.text = random_input.AnyText()
+        self.number = random_input.AnyNumber()
+        self.dimen_space = random_input.DimensionsSpacingAndGlue()
 
     def use_form1(self):
         case = random.choice(self.form1)
@@ -848,6 +854,10 @@ class MacroDefinitions:
         self.form9 = [
             "\\number"
         ]
+        self.text = random_input.AnyText()
+        self.number = random_input.AnyNumber()
+        self.dimen_space = random_input.DimensionsSpacingAndGlue()
+        self.macro= random_input.RandomMacroGenerator()
 
     def use_form1(self, any_macro):
         case = random.choice(self.form1)
@@ -934,6 +944,10 @@ class Conditionals:
         self.form10 = [
             "\\newif", "\\ifblob", "\\blobtrue", "\\blobfalse"
         ]
+        self.text = random_input.AnyText()
+        self.number = random_input.AnyNumber()
+        self.dimen_space = random_input.DimensionsSpacingAndGlue()
+        self.rel= random_input.AnyRelation()
 
     def use_form1(self, text1, text2, text3):
         case1 = "%s %s %s %s %s %s" % (self.form1[0], text1, text2, self.form1[1], text3, self.form1[2])
@@ -1011,6 +1025,8 @@ class HorizontalSpacing:
         self.form2 = [
             "\\hskip", "\\mskip"
         ]
+        self.leng = random_input.RandomTexLength()
+        
 
     def use_form1(self):
         case = random.choice(self.form1)
@@ -1044,6 +1060,10 @@ class VerticalSpacing:
         self.form4 = [
             "\\raise", "\\lower", "\\moveleft", "\\moveright", "\\hbox", "\\vbox"
         ]
+        self.text = random_input.AnyText()
+        self.number = random_input.AnyNumber()
+        self.dimen_space = random_input.DimensionsSpacingAndGlue()
+        self.leng = random_input.RandomTexLength()
 
     def use_form1(self):
         case = random.choice(self.form1)
@@ -1103,6 +1123,12 @@ class SetLineSpacing:
         self.form2 = [
             "\\openup"
         ]
+        self.text = random_input.AnyText()
+        self.number = random_input.AnyNumber()
+        self.dimen_space = random_input.DimensionsSpacingAndGlue()
+        self.leng = random_input.RandomTexLength()
+
+        
 
     def use_form1(self, any_length):
         case = random.choice(self.form1)
@@ -1155,6 +1181,11 @@ class BracesAndMatrices:
         self.form5 = [
             "\\underbrace"
         ]
+        self.text = random_input.AnyText()
+        self.generatorm = random_input.RandomMatrixGenerator()
+        self.generatorpm = random_input.RandomMatrixGenerator1()
+        self.generatorpb = random_input.RandomMatrixGenerator2()
+
 
     def use_form1(self, any_matrix):
         case1 = "%s {%s}" % (self.form1, any_matrix)
