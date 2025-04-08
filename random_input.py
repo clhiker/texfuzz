@@ -197,7 +197,7 @@ class RandomTexLength:
         """
         self.units = ["pt", "cm", "mm", "em", "ex"]  # 支持的长度单位
 
-    def gen_length(self, min_value=1, max_value=1000):
+    def gen_length(self, min_value=1, max_value=300):
         """
         生成随机长度
         :param min_value: 最小值（默认 1）
@@ -838,5 +838,21 @@ class ParshapeGenerator:
             lines.append(f"{indent} {width}")
 
         return f"{num_lines} {' '.join(lines)}"
+
+
+import random
+
+
+class ThousandMultiplierGenerator:
+
+    def __init__(self, min_multiplier=100, max_multiplier=100):
+        self.min = min_multiplier
+        self.max = max_multiplier
+
+    def generate(self):
+
+        multiplier = random.randint(self.min, self.max)
+        return str(multiplier * 10)
+
 
 

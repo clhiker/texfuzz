@@ -179,7 +179,6 @@ class Arrows(MathLatter):
 #             "⌈": "\\lceil", "⌉": "\\rceil", "⌊": "\\lfloor", "⌋": "\\rfloor"
 #         }
 
-'''
 
 class EveryTimeInsertions:
     def __init__(self):
@@ -268,7 +267,6 @@ class ElementaryMathControlSequences:
         return tex_text + '$'
 
 
-'''
 # 包含复杂嵌套情况，后面再修改
 # class NonItalicFunctionNames:
 #     def __init__(self):
@@ -403,17 +401,17 @@ class TEXFontsAndMagnification:
             "cmbx5", "cmbx6", "cmbx7", "cmbx8", "cmbx9", "cmbx10", "cmbx12", "cmbx17",
             "cmti5", "cmti6", "cmti7", "cmti8", "cmti9", "cmti10", "cmti12", "cmti17",
             "cmbxti5", "cmbxti6", "cmbxti7", "cmbxti8", "cmbxti9", "cmbxti10", "cmbxti12", "cmbxti17",
-            "cmss5", "cmss6", "cmss7", "cmss8", "cmss9", "cmss10", "cmss12", "cmss17",
-            "cmtt5", "cmtt6", "cmtt7", "cmtt8", "cmtt9", "cmtt10", "cmtt12", "cmtt17",
-            "cmmi5", "cmmi6", "cmmi7", "cmmi8", "cmmi9", "cmmi10", "cmmi12", "cmmi17",
-            "cmsy5", "cmsy6", "cmsy7", "cmsy8", "cmsy9", "cmsy10", "cmsy12", "cmsy17",
-            "cmex5", "cmex6", "cmex7", "cmex8", "cmex9", "cmex10", "cmex12", "cmex17",
+            # "cmss5", "cmss6", "cmss7", "cmss8", "cmss9", "cmss10", "cmss12", "cmss17",
+            # "cmtt5", "cmtt6", "cmtt7", "cmtt8", "cmtt9", "cmtt10", "cmtt12", "cmtt17",
+            # "cmmi5", "cmmi6", "cmmi7", "cmmi8", "cmmi9", "cmmi10", "cmmi12", "cmmi17",
+            # "cmsy5", "cmsy6", "cmsy7", "cmsy8", "cmsy9", "cmsy10", "cmsy12", "cmsy17",
+            # "cmex5", "cmex6", "cmex7", "cmex8", "cmex9", "cmex10", "cmex12", "cmex17",
             # Latin Modern 字体
-            "lmr5", "lmr6", "lmr7", "lmr8", "lmr9", "lmr10", "lmr12", "lmr17",
-            "lmbx5", "lmbx6", "lmbx7", "lmbx8", "lmbx9", "lmbx10", "lmbx12", "lmbx17",
-            "lmti5", "lmti6", "lmti7", "lmti8", "lmti9", "lmti10", "lmti12", "lmti17",
-            "lmbxti5", "lmbxti6", "lmbxti7", "lmbxti8", "lmbxti9", "lmbxti10", "lmbxti12", "lmbxti17",
-            "lmtt5", "lmtt6", "lmtt7", "lmtt8", "lmtt9", "lmtt10", "lmtt12", "lmtt17"
+            # "lmr5", "lmr6", "lmr7", "lmr8", "lmr9", "lmr10", "lmr12", "lmr17",
+            # "lmbx5", "lmbx6", "lmbx7", "lmbx8", "lmbx9", "lmbx10", "lmbx12", "lmbx17",
+            # "lmti5", "lmti6", "lmti7", "lmti8", "lmti9", "lmti10", "lmti12", "lmti17",
+            # "lmbxti5", "lmbxti6", "lmbxti7", "lmbxti8", "lmbxti9", "lmbxti10", "lmbxti12", "lmbxti17",
+            # "lmtt5", "lmtt6", "lmtt7", "lmtt8", "lmtt9", "lmtt10", "lmtt12", "lmtt17"
         ]
         self.fonts = ["\\rm",  "\\bf",  "\\tt",  "\\sl",  "\\it"]
         self.magnification = ["\\magnification", "\\magstep", "\\magstephalf"]
@@ -422,12 +420,13 @@ class TEXFontsAndMagnification:
         self.char_symbol = ["\\char"]
         self.number = random_input.AnyNumber()
         self.dimen = random_input.DimensionsSpacingAndGlue()
+        self.number2 = random_input.ThousandMultiplierGenerator()
 
     def use_form1(self):
         return random.choice(self.fonts)
 
-    def use_form2(self, number):
-        case1 = "%s=%s" % (self.magnification[0], number)
+    def use_form2(self, number, number2):
+        case1 = "%s=%s" % (self.magnification[0], number2)
         case2 = "%s %s" % (self.magnification[1], number)
         case3 = self.magnification[2]
         return random.choice([case1, case2, case3])
@@ -454,7 +453,7 @@ class TEXFontsAndMagnification:
     def gen_something(self):
         tex_text = ''
         tex_text += self.use_form1() + '\n'
-        tex_text += self.use_form2(self.number.uint_number()) + '\n'
+        tex_text += self.use_form2(self.number.uint_number() , self.number2.generate()) + '\n'
         tex_text += self.use_form3(self.dimen.gen_any_stand_dimen()) + '\n'
         tex_text += self.use_form4(self.dimen.gen_any_stand_dimen()) + '\n'
         tex_text += self.use_form5() + '\n'
@@ -701,7 +700,7 @@ class Boxes:
     def gen_something(self):
         tex_text = ''
         tex_text += self.use_form1(self.dimen_space.gen_any_stand_dimen(),
-                                   self.text.simple_string()) + '\n'
+                                   self.text.simple_string())  + '\n' +"\\box0\n"
         tex_text += self.use_form2(self.text.simple_string()) + '\n'
         return tex_text
 
