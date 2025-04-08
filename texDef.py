@@ -9,9 +9,9 @@ class MathLatter(object):
 
 class GreekLetters(MathLatter):
     def __init__(self):
-        '''
-        希腊字母，表示特定的数学或科学符号
-        '''
+
+        # 希腊字母，表示特定的数学或科学符号
+
         self.letters = [
             '\\alpha', '\\iota', '\\varrho', '\\beta', '\\kappa', '\\sigma',
             '\\gamma', '\\lambda', '\\varsigma', '\\delta', '\\mu', '\\tau',
@@ -36,9 +36,9 @@ class GreekLetters(MathLatter):
 
 class SymbolsOfTypeOrd(MathLatter):
     def __init__(self):
-        '''
-        这些符号在数学模式中通常用于表示变量、常量或其他普通数学对象，而不是操作符、关系符号或其他特殊符号。
-        '''
+
+        # 这些符号在数学模式中通常用于表示变量、常量或其他普通数学对象，而不是操作符、关系符号或其他特殊符号。
+
         self.symbols = [
             '\\aleph', '\\prime', '\\forall', '\\hbar', '\\emptyset', '\\exists',
             '\\imath', '\\nabla', '\\neg', '\\lnot', '\\jmath', '\\surd', '\\flat',
@@ -93,6 +93,7 @@ class BinaryOperations(MathLatter):
 
     def gen_something(self):
         return "$\n" + self.advance_use('A', 'B', 3) + "$"
+
 
 class PageLayout:
     def __init__(self):
@@ -161,6 +162,15 @@ class Arrows(MathLatter):
     def gen_something(self):
         return "$\n" + self.use(3) + "\n$"
 
+
+
+
+
+
+
+
+
+
 # 这个比较复杂，之后仔细修改
 # class Delimiters(MathLatter):
 #     def __init__(self):
@@ -168,6 +178,8 @@ class Arrows(MathLatter):
 #             "[": "\\lbrack", "{": "\\lbrace", "]": "\\rbrack", "}": "\\rbrace", "|": "\\vert",
 #             "⌈": "\\lceil", "⌉": "\\rceil", "⌊": "\\lfloor", "⌋": "\\rfloor"
 #         }
+
+'''
 
 class EveryTimeInsertions:
     def __init__(self):
@@ -186,6 +198,7 @@ class EveryTimeInsertions:
 
     def gen_something(self):
         return self.use(3)
+
 
 class Accents:
     def __init__(self):
@@ -207,6 +220,7 @@ class Accents:
 
     def gen_something(self):
         return "$\n" + self.use(3) + "$"
+
 
 class ElementaryMathControlSequences:
     def __init__(self):
@@ -245,7 +259,7 @@ class ElementaryMathControlSequences:
         case = random.choice(self.form_3)
         case1 = "{%s %s %s}" % (text1, case, text2)
         return case1
-    
+
     def gen_something(self):
         tex_text = '$\n'
         tex_text += self.use_form1(self.any_text.simple_string()) + '\n'
@@ -253,6 +267,8 @@ class ElementaryMathControlSequences:
         tex_text += self.use_form3(self.any_text.simple_string(), self.any_text.simple_string()) + '\n'
         return tex_text + '$'
 
+
+'''
 # 包含复杂嵌套情况，后面再修改
 # class NonItalicFunctionNames:
 #     def __init__(self):
@@ -264,6 +280,8 @@ class ElementaryMathControlSequences:
 #                           '\\dim', '\\inf', '\\liminf', '\\max', '\\sin',
 #                           '\\tanh', '\\pmod', '\\bmod', '\\mathop'
 #                           ]
+
+
 
 class FootnotesInsertionsAndUnderlines:
     def __init__(self):
@@ -285,13 +303,14 @@ class FootnotesInsertionsAndUnderlines:
     def use_form3(self, text):
         case1 = "%s{%s}" % (self.underbar[0], text)
         return case1
-    
+
     def gen_something(self):
         tex_text = ''
         tex_text += self.use_form1(self.text.simple_string(), self.text.simple_string()) + '\n'
         tex_text += self.use_form2(self.text.simple_string()) + '\n'
         tex_text += self.use_form3(self.text.simple_string()) + '\n'
         return tex_text
+
 
 class UsefulParametersAndConversions:
     def __init__(self):
@@ -342,6 +361,7 @@ class UsefulParametersAndConversions:
         tex_text += self.use_form4() + '\n'
         return tex_text
 
+
 class FillsLeadersAndEllipses:
     def __init__(self):
         self.text = random_input.AnyText()
@@ -382,18 +402,18 @@ class TEXFontsAndMagnification:
             "cmr5", "cmr6", "cmr7", "cmr8", "cmr9", "cmr10", "cmr12", "cmr17",
             "cmbx5", "cmbx6", "cmbx7", "cmbx8", "cmbx9", "cmbx10", "cmbx12", "cmbx17",
             "cmti5", "cmti6", "cmti7", "cmti8", "cmti9", "cmti10", "cmti12", "cmti17",
-            # "cmbxti5", "cmbxti6", "cmbxti7", "cmbxti8", "cmbxti9", "cmbxti10", "cmbxti12", "cmbxti17",
+            "cmbxti5", "cmbxti6", "cmbxti7", "cmbxti8", "cmbxti9", "cmbxti10", "cmbxti12", "cmbxti17",
             "cmss5", "cmss6", "cmss7", "cmss8", "cmss9", "cmss10", "cmss12", "cmss17",
             "cmtt5", "cmtt6", "cmtt7", "cmtt8", "cmtt9", "cmtt10", "cmtt12", "cmtt17",
             "cmmi5", "cmmi6", "cmmi7", "cmmi8", "cmmi9", "cmmi10", "cmmi12", "cmmi17",
             "cmsy5", "cmsy6", "cmsy7", "cmsy8", "cmsy9", "cmsy10", "cmsy12", "cmsy17",
             "cmex5", "cmex6", "cmex7", "cmex8", "cmex9", "cmex10", "cmex12", "cmex17",
             # Latin Modern 字体
-            # "lmr5", "lmr6", "lmr7", "lmr8", "lmr9", "lmr10", "lmr12", "lmr17",
-            # "lmbx5", "lmbx6", "lmbx7", "lmbx8", "lmbx9", "lmbx10", "lmbx12", "lmbx17",
-            # "lmti5", "lmti6", "lmti7", "lmti8", "lmti9", "lmti10", "lmti12", "lmti17",
-            # "lmbxti5", "lmbxti6", "lmbxti7", "lmbxti8", "lmbxti9", "lmbxti10", "lmbxti12", "lmbxti17",
-            # "lmtt5", "lmtt6", "lmtt7", "lmtt8", "lmtt9", "lmtt10", "lmtt12", "lmtt17"
+            "lmr5", "lmr6", "lmr7", "lmr8", "lmr9", "lmr10", "lmr12", "lmr17",
+            "lmbx5", "lmbx6", "lmbx7", "lmbx8", "lmbx9", "lmbx10", "lmbx12", "lmbx17",
+            "lmti5", "lmti6", "lmti7", "lmti8", "lmti9", "lmti10", "lmti12", "lmti17",
+            "lmbxti5", "lmbxti6", "lmbxti7", "lmbxti8", "lmbxti9", "lmbxti10", "lmbxti12", "lmbxti17",
+            "lmtt5", "lmtt6", "lmtt7", "lmtt8", "lmtt9", "lmtt10", "lmtt12", "lmtt17"
         ]
         self.fonts = ["\\rm",  "\\bf",  "\\tt",  "\\sl",  "\\it"]
         self.magnification = ["\\magnification", "\\magstep", "\\magstephalf"]
@@ -440,6 +460,10 @@ class TEXFontsAndMagnification:
         tex_text += self.use_form5() + '\n'
         return tex_text
 
+
+#
+
+##需要修改。表格
 # class AlignmentDisplays:
 #     def __init__(self):
 #         self.simple_line = ["\\+", "&", "\\cr"]
@@ -647,6 +671,7 @@ class TEXFontsAndMagnification:
 #         # tex_text += self.use_openup(self.dimen.gen_any_stand_dimen()) + '\n'
 #         # tex_text += self.use_tabskip(self.dimen.gen_any_stand_glue()) + '\n'
 #         return tex_text
+#
 
 
 class Boxes:
@@ -654,7 +679,7 @@ class Boxes:
         self.boxes = [
             "\\hbox", "\\vbox", "\\vtop"
         ]
-        self.lap = ['\\rlap', 'llap']
+        self.lap = ['\\rlap', '\\llap']
         self.vcenter = ['\\vcenter']
         self.dimen_space = random_input.DimensionsSpacingAndGlue()
         self.text = random_input.AnyText()
@@ -697,63 +722,78 @@ class OverfullBoxes:
         return tex_text
 
 
-# class IndentationAndItemizedLists:
-#     def __init__(self):
-#         self.form1 = [
-#             "\\item", "\\itemitem"
-#         ]
-#         self.form2 = [
-#             "\\indent", "\\noindent", "\\narrower"
-#         ]
-#         self.form3 = [
-#             "\\parindent", "\\displayindent", "\\leftskip", "\\rightskip", "\\hangident",
-#         ]
-#         self.form4 = [
-#             "\\hangafter", "\\parshape"
-#         ]
-#         self.text = random_input.AnyText()
-#         self.number = random_input.AnyNumber()
-#         self.dimen_space = random_input.DimensionsSpacingAndGlue()
-#
-#     def use_form1(self, text):
-#         case = random.choice(self.form1)
-#         case1 = "%s { %s }" % (case, text)
-#         return case1
-#
-#     def use_form2(self):
-#         case = random.choice(self.form2)
-#         return case
-#
-#     def use_form3(self, any_dimen):
-#         case = random.choice(self.form3)
-#         case1 = "%s = %s" % (case, any_dimen)
-#         return case1
-#
-#     def use_form4(self, any_number):
-#         case = random.choice(self.form4)
-#         case1 = "%s = %s" % (case, any_number)
-#         return case1
-#
-#     def gen_something(self):
-#         tex_text = ''
-#         tex_text += self.use_form1(self.text.simple_string()) + '\n'
-#         tex_text += self.use_form2() + '\n'
-#         tex_text += self.use_form3(self.dimen_space.gen_any_stand_dimen()) + '\n'
-#         tex_text += self.use_form4(self.number.uint_number()) + '\n'
-#         return tex_text
+
 
 class IndentationAndItemizedLists:
     def __init__(self):
-        self.indentation = ["\\indent",  "\\noindent",  "\\parindent", "\\displayindent",  "\\leftskip",
-             "\\rightskip",  "\\narrower",  "\\item", "\\itemitem"
+        self.form1 = [
+            "\\item", "\\itemitem"
+        ]
+        self.form2 = [
+            "\\indent", "\\noindent", "\\narrower"
+        ]
+        self.form3 = [
+            "\\parindent", "\\displayindent", "\\leftskip", "\\rightskip", "\\hangindent",
+        ]
+        self.form4 = [
+            "\\hangafter"
+        ]
+        self.form5 = [
+            "\\parshape"
+        ]
+
+        self.text = random_input.AnyText()
+        self.text2 = random_input.ParshaperGenerator()
+        self.number = random_input.AnyNumber()
+        self.dimen_space = random_input.DimensionsSpacingAndGlue()
+
+    def use_form1(self, text):
+        case = random.choice(self.form1)
+        case1 = "%s { %s }" % (case, text)
+        return case1
+
+    def use_form2(self):
+        case = random.choice(self.form2)
+        return case
+
+    def use_form3(self, any_dimen):
+        case = random.choice(self.form3)
+        case1 = "%s = %s" % (case, any_dimen)
+        return case1
+
+    def use_form4(self, any_number):
+        case1 = "%s = %s" % (self.form4[0], any_number)
+        return case1
+
+    def use_form5(self, text2):
+        case1 = "%s = %s" % (self.form5[0], text2)
+        return case1
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1(self.text.simple_string()) + '\n'
+        tex_text += self.use_form2() + '\n'
+        tex_text += self.use_form3(self.dimen_space.gen_any_stand_dimen()) + '\n'
+        tex_text += self.use_form4(self.number.uint_number()) + '\n'
+        tex_text += self.use_form4(self.text2.generate_parshape()) + '\n'
+        return tex_text
+
+
+class IndentationAndItemizedLists:
+    def __init__(self):
+        self.indentation = ["\\indent",  "\\noindent", "\\narrower",  "\\item", "\\itemitem"
         ]
         self.form1 = ["\\indent",  "\\noindent", "\\narrower"]
         self.form2 = ["\\parindent", "\\displayindent",  "\\leftskip", "\\rightskip", '\\hangindent']
         self.form3 = ["\\beginsection", "\\item", "\\itemitem"]
-        self.form4 = ["\\hangafter", "\\parshape"]
+        self.form4 = ["\\hangafter"]
+        self.form5 = ["\\par"]
+        self.form6 = ["\\parshape"]
+
         self.dimen_space = random_input.DimensionsSpacingAndGlue()
         self.text = random_input.AnyText()
         self.numbers = random_input.AnyNumber()
+        self.parshap = random_input.ParshaperGenerator()
 
     def use_form1(self, text):
         case = random.choice(self.indentation)
@@ -770,7 +810,11 @@ class IndentationAndItemizedLists:
         return case1
     def use_form4(self, number):
         case = random.choice(self.form4)
-        case1 = f"{case}={number}"
+        case1 = f"{case}={number} \n {self.form5[0]}"
+        return case1
+    def use_form6(self,parshape1):
+
+        case1 = f"{parshape1}"
         return case1
 
     def gen_something(self):
@@ -781,6 +825,7 @@ class IndentationAndItemizedLists:
                                     self.text.simple_string(),
                                     self.text.simple_string()) + '\n'
         tex_text += self.use_form4(self.numbers.uint_number()) + '\n'
+        tex_text += self.use_form6(self.parshap.generate_parshape()) + '\n'
         return tex_text
 
 
@@ -825,91 +870,95 @@ class HeadersFootersAndPageNumbers:
         tex_text += self.use_form4(self.text.simple_string()) + '\n'
         return tex_text
 
-class MacroDefinitions:
-    def __init__(self):
-        self.form1 = [
-            "\\def", "gdef", "edef", "xdef"
-        ]
-        self.form2 = [
-            "\\cs", "\\let"
-        ]
-        self.form3 = [
-            "\\long", "\\outer", "global"
-        ]
-        self.form4 = [
-            "\\noexpand"
-        ]
-        self.form5 = [
-            "\\expandafter"
-        ]
-        self.form6 = [
-            "\\futurelet"
-        ]
-        self.form7 = [
-            "\\csname", "\\endcsname"
-        ]
-        self.form8 = [
-            "\\string", "\\"
-        ]
-        self.form9 = [
-            "\\number"
-        ]
-        self.text = random_input.AnyText()
-        self.number = random_input.AnyNumber()
-        self.dimen_space = random_input.DimensionsSpacingAndGlue()
-        self.macro= random_input.RandomMacroGenerator()
 
-    def use_form1(self, any_macro):
-        case = random.choice(self.form1)
-        case1 = "%s %s" % (case, any_macro)
-        return case1
 
-    def use_form2(self, text):
-        case1 = "%s %s = %s" % (self.form2[1], self.form2[0], text)
-        return case1
 
-    def use_form3(self, any_macro):
-        case = random.choice(self.form3)
-        case1 = "%s %s %s" % (case, self.form1[0], any_macro)
-        return case1
-
-    def use_form4(self):
-        case1 = "\\def\\foo{Hello, World!}\\n %s\\foo" % (self.form4[0])
-        return case1
-
-    def use_form5(self):
-        case1 = "\\def\\a{Hello}\\def\\b{\\a}%s\\b\\relax" % (self.form5[0])
-        return case1
-
-    def use_form6(self):
-        case1 = "%s\\next\\tokenA\\tokenB" % (self.form6[0])
-        return case1
-
-    def use_form7(self, text):
-        case1 = "%s %s %s" % (self.form7[0], text, self.form7[1])
-        return case1
-
-    def use_form8(self, text):
-        case1 = "%s%s%s" % (self.form8[0], self.form8[1], text)
-        return case1
-
-    def use_form9(self, any_number):
-        case1 = "%s%s" % (self.form9, any_number)
-        return case1
-
-    def gen_something(self):
-        tex_text = ''
-        tex_text += self.use_form1(self.macro.gen_macro()) + '\n'
-        tex_text += self.use_form2(self.text.simple_string()) + '\n'
-        tex_text += self.use_form3(self.macro.gen_macro()) + '\n'
-        tex_text += self.use_form4() + '\n'
-        tex_text += self.use_form5() + '\n'
-        tex_text += self.use_form6() + '\n'
-        tex_text += self.use_form7(self.text.simple_string()) + '\n'
-        tex_text += self.use_form8(self.text.simple_string()) + '\n'
-        tex_text += self.use_form9(self.number.uint_number()) + '\n'
-
-        return tex_text
+# # #宏定义。 需要修改
+# # class MacroDefinitions:
+# #     def __init__(self):
+# #         self.form1 = [
+# #             "\\def", "\\gdef", "\\edef", "\\xdef"
+# #         ]
+# #         self.form2 = [
+# #             "\\cs", "\\let"
+# #         ]
+# #         self.form3 = [
+# #             "\\long", "\\outer", "\\global"
+# #         ]
+# #         self.form4 = [
+# #             "\\noexpand"
+# #         ]
+# #         self.form5 = [
+# #             "\\expandafter"
+# #         ]
+# #         self.form6 = [
+# #             "\\futurelet"
+# #         ]
+# #         self.form7 = [
+# #             "\\csname", "\\endcsname"
+# #         ]
+# #         self.form8 = [
+# #             "\\string", "\\"
+# #         ]
+# #         self.form9 = [
+# #             "\\number"
+# #         ]
+# #         self.text = random_input.AnyText()
+# #         self.number = random_input.AnyNumber()
+# #         self.dimen_space = random_input.DimensionsSpacingAndGlue()
+# #         self.macro= random_input.RandomMacroGenerator()
+# #
+# #     def use_form1(self, any_macro):
+# #         case = random.choice(self.form1)
+# #         case1 = "%s %s" % (case, any_macro)
+# #         return case1
+# #
+# #     def use_form2(self, text):
+# #         case1 = "%s %s = %s" % (self.form2[1], self.form2[0], text)
+# #         return case1
+# #
+# #     def use_form3(self, any_macro):
+# #         case = random.choice(self.form3)
+# #         case1 = "%s %s %s" % (case, self.form1[0], any_macro)
+# #         return case1
+# #
+# #     def use_form4(self):
+# #         case1 = "\\def\\foo{Hello, World!}\\par %s\\foo" % (self.form4[0])
+# #         return case1
+# #
+# #     def use_form5(self):
+# #         case1 = "\\def\\a{Hello}\\def\\b{\\a}%s\\b\\relax" % (self.form5[0])
+# #         return case1
+# #
+# #     def use_form6(self):
+# #         case1 = "%s\\next\\tokenA\\tokenB" % (self.form6[0])
+# #         return case1
+# #
+# #     def use_form7(self, text):
+# #         case1 = "%s %s %s" % (self.form7[0], text, self.form7[1])
+# #         return case1
+# #
+# #     def use_form8(self, text):
+# #         case1 = "%s%s%s" % (self.form8[0], self.form8[1], text)
+# #         return case1
+# #
+# #     def use_form9(self, any_number):
+# #         case1 = "%s%s" % (self.form9, any_number)
+# #         return case1
+# #
+# #     def gen_something(self):
+# #         tex_text = ''
+# #         tex_text += self.use_form1(self.macro.gen_macro()) + '\n'
+# #         tex_text += self.use_form2(self.text.simple_string()) + '\n'
+# #         tex_text += self.use_form3(self.macro.gen_macro()) + '\n'
+# #         tex_text += self.use_form4() + '\n'
+# #         tex_text += self.use_form5() + '\n'
+# #         tex_text += self.use_form6() + '\n'
+# #         tex_text += self.use_form7(self.text.simple_string()) + '\n'
+# #         tex_text += self.use_form8(self.text.simple_string()) + '\n'
+# #         tex_text += self.use_form9(self.number.uint_number()) + '\n'
+# #
+# #         return tex_text
 
 
 class Conditionals:
@@ -939,7 +988,7 @@ class Conditionals:
             "\\ifcase", "\\or", "\\else", "\\fi"
         ]
         self.form9 = [
-            "\\loop", "\\if", "\\repeat"
+            "\\loop", "\\if", "\\repeat", "\\fi"
         ]
         self.form10 = [
             "\\newif", "\\ifblob", "\\blobtrue", "\\blobfalse"
@@ -954,31 +1003,29 @@ class Conditionals:
         return case1
 
     def use_form2(self, any_number1, any_number2, any_relation):
-        case1 = "%s %s %s %s" % (self.form2, any_number1, any_relation, any_number2)
+        case1 = "%s %s %s %s %s" % (self.form2[0], any_number1, any_relation, any_number2, self.form1[2])
         return case1
 
     def use_form3(self, any_dimen1, any_dimen2, any_relation):
-        case1 = "%s %s %s %s " % (self.form3, any_dimen1, any_relation, any_dimen2)
+        case1 = "%s %s %s %s %s" % (self.form3[0], any_dimen1, any_relation, any_dimen2, self.form1[2])
         return case1
 
-    def use_form4(self, any_number):
+    def use_form4(self):
         case = random.choice(self.form4)
-        case1 = "%s %s" % (case, any_number)
+        any_number = str(random.randint(1, 10))
+        case1 = "%s %s %s" % (case, any_number, self.form1[2])
         return case1
 
     def use_form5(self):
         case = random.choice(self.form5)
-        case1 = "%s" % (case)
+        case1 = "%s %s" % (case, self.form1[2])
         return case1
 
     def use_form6(self, text1, text2):
         case = random.choice(self.form6)
-        case1 = "%s %s %s" % (case, text1, text2)
+        case1 = "%s %s %s %s" % (case, text1, text2, self.form1[2])
         return case1
 
-    def use_form7(self, any_dimen1, any_dimen2):
-        case1 = "%s %s %s" % (self.form7, any_dimen1, any_dimen2)
-        return case1
 
     def use_form8(self, any_number, text1, text2, text3):
         case1 = "%s %s %s %s %s %s %s %s" % (
@@ -990,29 +1037,31 @@ class Conditionals:
         return case1
 
     def use_form10(self):
-        case = random.choice(self.form10[2], self.form10[3])
-        case1 = "%s %s %s " % (self.form10[0], self.form10[1], case)
+        case = random.choice((self.form10[2], self.form10[3]))
+        case1 = "%s%s %s " % (self.form10[0], self.form10[1], case)
         return case1
 
     def gen_something(self):
         tex_text = ''
+        tex_text += self.use_form10() + '\n'
         tex_text += self.use_form1(self.text.simple_string(), self.text.simple_string(),
                                    self.text.simple_string()) + '\n'
         tex_text += self.use_form2(self.number.uint_number(), self.number.uint_number(),
                                    self.rel.generate_random_relation()) + '\n'
         tex_text += self.use_form3(self.dimen_space.gen_any_stand_dimen(), self.dimen_space.gen_any_stand_dimen(),
                                    self.rel.generate_random_relation()) + '\n'
-        tex_text += self.use_form4(self.number.uint_number()) + '\n'
+        tex_text += self.use_form4() + '\n'
         tex_text += self.use_form5() + '\n'
         tex_text += self.use_form6(self.text.simple_string(), self.text.simple_string()) + '\n'
-        tex_text += self.use_form7(self.dimen_space.gen_any_stand_dimen(),
-                                   self.dimen_space.gen_any_stand_dimen()) + '\n'
+
         tex_text += self.use_form8(self.number.uint_number(), self.text.simple_string(), self.text.simple_string(),
                                    self.text.simple_string()) + '\n'
         tex_text += self.use_form9(self.text.simple_string(), self.text.simple_string()) + '\n'
-        tex_text += self.use_form10() + '\n'
+        # tex_text += self.use_form10() + '\n'
+
 
         return tex_text
+
 
 
 class HorizontalSpacing:
@@ -1020,13 +1069,18 @@ class HorizontalSpacing:
         self.form1 = [
             "\\quad", "\\qquad", "\\thinspace", "\\enspace", "\\enskip",
             "\\hfill", "\\hfill", "\\hfilneg",
-            "\\thickspace", "\\>", "\\medspace", "\\;", "\\!", "\\,", "\\negthinspace"
+             "\\>", "\\;", "\\!", "\\,", "\\negthinspace"
         ]
         self.form2 = [
-            "\\hskip", "\\mskip"
+             "\\mskip"
         ]
-        self.leng = random_input.RandomTexLength()
-        
+        self.form3 = [
+            "\\hskip"
+        ]
+
+        self.leng = random_input.RandomTexLength2()
+        self.leng1 = random_input.RandomTexLength()
+
 
     def use_form1(self):
         case = random.choice(self.form1)
@@ -1038,12 +1092,18 @@ class HorizontalSpacing:
         case1 = "%s %s" % (case, any_length)
         return case1
 
+    def use_form3(self, any_length):
+        case = random.choice(self.form3)
+        case1 = "%s %s" % (case, any_length)
+        return case1
+
     def gen_something(self):
         tex_text = ''
         tex_text += self.use_form1() + '\n'
         tex_text += self.use_form2(self.leng.gen_length()) + '\n'
+        tex_text += self.use_form3(self.leng1.gen_length()) + '\n'
 
-        return tex_text
+        return "$\n"+ tex_text +"$"
 
 
 class VerticalSpacing:
@@ -1058,7 +1118,10 @@ class VerticalSpacing:
             "\\phantom", "\\vphantom", "\\hphantom", "\\smash"
         ]
         self.form4 = [
-            "\\raise", "\\lower", "\\moveleft", "\\moveright", "\\hbox", "\\vbox"
+            "\\moveleft", "\\moveright", "\\hbox", "\\vbox"
+        ]
+        self.form5 = [
+            "\\raise", "\\lower", "\\leavevmode"
         ]
         self.text = random_input.AnyText()
         self.number = random_input.AnyNumber()
@@ -1081,10 +1144,17 @@ class VerticalSpacing:
         return case1
 
     def use_form4(self, any_dimen, text):
-        case1 = random.choice(self.form4[0], self.form4[1], self.form4[2], self.form4[3])
-        case2 = random.choice(self.form4[4], self.form4[5])
+        case1 = random.choice((self.form4[0], self.form4[1]))
+        case2 = random.choice((self.form4[2], self.form4[3]))
         case3 = "%s %s %s {%s}" % (case1, any_dimen, case2, text)
         return case3
+
+    def use_form5(self, any_dimen, text):
+        case1 = random.choice((self.form5[0], self.form5[1]))
+        case2 = random.choice((self.form4[2], self.form4[3]))
+        case3 = "%s %s %s %s {%s}" % (self.form5[2], case1, any_dimen, case2, text)
+        return case3
+
 
     def gen_something(self):
         tex_text = ''
@@ -1092,6 +1162,7 @@ class VerticalSpacing:
         tex_text += self.use_form2(self.leng.gen_length()) + '\n'
         tex_text += self.use_form3(self.text.simple_string()) + '\n'
         tex_text += self.use_form4(self.dimen_space.gen_any_stand_dimen(), self.text.simple_string()) + '\n'
+        tex_text += self.use_form5(self.dimen_space.gen_any_stand_dimen(), self.text.simple_string()) + '\n'
 
         return tex_text
 
@@ -1128,7 +1199,7 @@ class SetLineSpacing:
         self.dimen_space = random_input.DimensionsSpacingAndGlue()
         self.leng = random_input.RandomTexLength()
 
-        
+
 
     def use_form1(self, any_length):
         case = random.choice(self.form1)
@@ -1136,7 +1207,7 @@ class SetLineSpacing:
         return case1
 
     def use_form2(self, any_length):
-        case1 = "%s %s" % (self.form2, any_length)
+        case1 = "%s %s" % (self.form2[0], any_length)
         return case1
 
     def gen_something(self):
@@ -1188,23 +1259,23 @@ class BracesAndMatrices:
 
 
     def use_form1(self, any_matrix):
-        case1 = "%s {%s}" % (self.form1, any_matrix)
+        case1 = "%s {%s}" % (self.form1[0], any_matrix)
         return case1
 
     def use_form2(self, any_matrix):
-        case1 = "%s {%s}" % (self.form2, any_matrix)
+        case1 = "%s {%s}" % (self.form2[0], any_matrix)
         return case1
 
     def use_form3(self, any_matrix):
-        case1 = "%s {%s}" % (self.form3, any_matrix)
+        case1 = "%s {%s}" % (self.form3[0], any_matrix)
         return case1
 
     def use_form4(self, text):
-        case1 = "%s {%s}" % (self.form4, text)
+        case1 = "%s {%s}" % (self.form4[0], text)
         return case1
 
     def use_form5(self, text1, text2):
-        case1 = "%s {%s}_{%s}" % (self.form5, text1, text2)
+        case1 = "%s {%s}_{%s}" % (self.form5[0], text1, text2)
         return case1
 
     def gen_something(self):
@@ -1215,7 +1286,7 @@ class BracesAndMatrices:
         tex_text += self.use_form4(self.text.simple_string()) + '\n'
         tex_text += self.use_form5(self.text.simple_string(), self.text.simple_string()) + '\n'
 
-        return tex_text
+        return "$\n"+ tex_text +"$"
 
 
 class DisplayedEquations:
@@ -1235,9 +1306,13 @@ class DisplayedEquations:
         self.form5 = [
             "\\cases"
         ]
-        self.form6 = [
-            "\\noalign"
-        ]
+
+        self.text = random_input.AnyText()
+        self.reg = random_input.RandomEquationGenerator()
+        self.rmfg = random_input.EqalignGenerator()
+        self.afg = random_input.AlignedFormulaGenerator()
+        self.rfg = random_input.RandomFormulaGenerator()
+        self.piece = random_input.RandomPiecewiseFunctionGenerator()
 
     def use_form1(self, any_math, text):
         case = random.choice(self.form1)
@@ -1245,7 +1320,7 @@ class DisplayedEquations:
         return case1
 
     def use_form2(self, any_formula):
-        case1 = "%s {%s}" % (self.form2, any_formula)
+        case1 = "%s {%s}" % (self.form2[0], any_formula)
         return case1
 
     def use_form3(self, any_formula):
@@ -1254,25 +1329,21 @@ class DisplayedEquations:
         return case1
 
     def use_form4(self, any_formula):
-        case1 = "%s {%s}" % (self.form4, any_formula)
+        case1 = "%s {%s}" % (self.form4[0], any_formula)
         return case1
 
     def use_form5(self, any_piece):
-        case1 = "%s {%s}" % (self.form5, any_piece)
+        case1 = "%s {%s}" % (self.form5[0], any_piece)
         return case1
 
-    def use_form6(self, text):
-        case1 = "%s {%s}" % (self.form6, text)
-        return case1
 
     def gen_something(self):
-        tex_text = ''
-        tex_text += self.use_form1(self.reg.gen_math(self.reg.generate_equation()), self.text.simple_string()) + '\n'
-        tex_text += self.use_form2(self.rmfg.gen_formula()) + '\n'
-        tex_text += self.use_form3(self.afg.gen_formula1()) + '\n'
-        tex_text += self.use_form4(self.rfg.gen_formula_block()) + '\n'
-        tex_text += self.use_form5(self.piece.gen_piecewise_function()) + '\n'
-        tex_text += self.use_form6(self.text.simple_string()) + '\n'
+        tex_text = "\def\\frac#1#2{{#1 \over #2}}\n\def\sqr#1{\sqrt{#1}}\n\def\cos{\mathop{\\rm cos}\\nolimits}\n\def\sin{\mathop{\\rm sin}\\nolimits}\def\log{\mathop{\\rm log}\\nolimits}"
+        tex_text += "$$\n" + self.use_form1(self.reg.gen_math(self.reg.generate_equation()), self.text.simple_string()) + "$$\n"
+        tex_text += "$$\n" + self.use_form2(self.rmfg.generate_eqalign()) + "$$\n"
+        tex_text += "$$\n" + self.use_form3(self.afg.gen_formula1()) + "$$\n"
+        tex_text += "$$\n" + self.use_form4(self.rfg.gen_formula_block()) + "$$\n"
+        tex_text += "$$\n" + self.use_form5(self.piece.gen_piecewise_function()) + "$$\n"
 
         return tex_text
 

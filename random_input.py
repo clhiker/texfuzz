@@ -208,7 +208,23 @@ class RandomTexLength:
         unit = random.choice(self.units)
         return f"{value:.2f}{unit}"  # 保留两位小数
 
-    import random
+class RandomTexLength2:
+    def __init__(self):
+        """
+        初始化随机长度生成器
+        """
+        self.units = ["mu"]  # 支持的长度单位
+
+    def gen_length(self, min_value=1, max_value=1000):
+        """
+        生成随机长度
+        :param min_value: 最小值（默认 1）
+        :param max_value: 最大值（默认 100）
+        :return: 随机长度（如 "10pt", "0.5cm"）
+        """
+        value = random.uniform(min_value, max_value)
+        unit = random.choice(self.units)
+        return f"{value:.2f}{unit}"  # 保留两位小数
 
 
 class RandomMatrixGenerator:
@@ -290,7 +306,7 @@ class RandomMatrixGenerator1:
         # 将矩阵转换为 plain TeX 语法
         tex_matrix = ""
         for row in matrix:
-            tex_matrix += " & ".join(row) + " \\\\\n"
+            tex_matrix += " & ".join(row) + " \\cr\n"
 
         return tex_matrix
 
@@ -448,7 +464,7 @@ class RandomMathFormulaGenerator:
                 line[align_pos] = f"& {line[align_pos]}"
             formula.append(" ".join(line))
         # 将公式转换为 plain TeX 语法
-        tex_formula = " \\cr\n".join(formula) + "\n}"
+        tex_formula = " \\cr\n".join(formula) + "\n"
         return tex_formula
     
 
@@ -474,7 +490,7 @@ class AlignedFormulaGenerator:
         ]
         return random.choice(options)
 
-    def gen_formula1(self, with_number=True):
+    def gen_formula1(self, with_number=True, tex_formula=''):
         """
         生成随机对齐公式
         :param with_number: 是否为公式添加编号
@@ -495,6 +511,7 @@ class AlignedFormulaGenerator:
        
         for i, formula in enumerate(formulas):
             if with_number:
+                print(tex_formula)
                 tex_formula += f"  {formula} & ({i+1})\\cr\n"  # 添加编号
             else:
                 tex_formula += f"  {formula} \\cr\n"  # 无编号
@@ -649,3 +666,177 @@ class RandomMacroGenerator:
         # 构建宏定义
         macro_definition = f"{macro_name}{parameter_text}{{\n  {definition_content}\n}}"
         return macro_definition
+
+
+import random
+from typing import List, Tuple
+
+
+class ParshaperGenerator:
+    def __init__(self,
+                 max_lines: int = 10,
+                 max_indent: float = 50.0,
+                 base_width: float = 400.0,  # 假设基础行宽为400pt
+                 indent_unit: str = 'pt',
+                 width_unit: str = 'pt'):
+        """
+        初始化参数生成器
+
+        :param max_lines: 最大生成行数 (N)
+        :param max_indent: 最大缩进量
+        :param base_width: 基础行宽 (相当于\hsize)
+        :param indent_unit: 缩进单位 (pt/mm/em等)
+        :param width_unit: 行宽单位
+        """
+        self.max_lines = max_lines
+        self.max_indent = max_indent
+        self.base_width = base_width
+        self.indent_unit = indent_unit
+        self.width_unit = width_unit
+
+    def generate_line_params(self) -> Tuple[float, float]:
+        """生成单行的缩进和行宽参数"""
+        indent = round(random.uniform(0, self.max_indent), 2)
+        width = round(self.base_width - indent, 2)
+        return (indent, width)
+
+    def generate_parshape(self,
+                          fixed_line_count: int = None,
+                          progressive: bool = False) -> str:
+        """
+        生成完整的\parshape命令
+
+        :param fixed_line_count: 固定行数(N)，None则随机
+        :param progressive: 是否生成递增缩进
+        :return: \parshape命令字符串
+        """
+        # 确定行数
+        N = fixed_line_count if fixed_line_count else random.randint(1, self.max_lines)
+
+        params = []
+        current_indent = 0.0
+
+        for k in range(N):
+            if progressive:
+                # 渐进式缩进：每行比前一行增加随机缩进
+                indent_step = random.uniform(0, self.max_indent / N)
+                current_indent = round(min(current_indent + indent_step, self.max_indent), 2)
+            else:
+                # 完全随机缩进
+                current_indent = round(random.uniform(0, self.max_indent), 2)
+
+            width = round(self.base_width - current_indent, 2)
+            params.extend([current_indent, width])
+
+        # 转换为TeX格式
+        param_strs = []
+        for i, val in enumerate(params):
+            # 每两个参数后换行（i从0开始计数）
+            if i % 2 == 0 and i != 0:
+                param_strs.append('\n' + ' ' * 11)  # 保持对齐
+            param_strs.append(f"{val}{self.indent_unit if i % 2 == 0 else self.width_unit} ")
+
+        # 构建完整命令
+        command = f"\\parshape={N}\n" + ' ' * 11 + ''.join(param_strs).strip()
+        return command
+
+    @staticmethod
+    def validate_parshape(params: List[float]) -> bool:
+        """验证生成的参数是否有效"""
+        if len(params) % 2 != 0:
+            return False
+        for i in range(0, len(params), 2):
+            if params[i] + params[i + 1] > 500:  # 假设总宽度不超过500pt
+                return False
+        return True
+
+
+import random
+from typing import List
+
+
+class EqalignGenerator:
+    def __init__(self):
+        self.variables = ['x', 'y', 'z', 'a', 'b', 'c']
+        self.operators = ['+', '-', '\\times', '\\div']
+        self.functions = ['\\sqrt', '\\sin', '\\cos', '\\log']
+        self.max_depth = 3
+
+    def generate_random_term(self, depth=0) -> str:
+        """生成随机数学项"""
+        if depth >= self.max_depth:
+            return random.choice(self.variables + ['1', '2', '3', '4', '5'])
+
+        choice = random.random()
+        if choice < 0.3:
+            # 生成分数
+            return f"\\frac{{{self.generate_random_term(depth + 1)}}}{{{self.generate_random_term(depth + 1)}}}"
+        elif choice < 0.6:
+            # 生成函数
+            func = random.choice(self.functions)
+            arg = self.generate_random_term(depth + 1)
+            return f"{func}{{{arg}}}" if func != '\\sqrt' else f"{func}{{{arg}}}"
+        else:
+            # 生成变量或数字
+            return random.choice(self.variables + [str(random.randint(1, 9))])
+
+    def generate_random_expression(self, side='left') -> str:
+        """生成随机表达式"""
+        lhs = self.generate_random_term()
+        if side == 'left':
+            return lhs
+
+        rhs = self.generate_random_term()
+        operator = random.choice(self.operators)
+        return f"{lhs} {operator} {rhs}"
+
+    def generate_eqalign(self, num_lines=3) -> str:
+        """生成完整的eqalign环境"""
+        lines = []
+        for _ in range(num_lines):
+            left_expr = self.generate_random_expression(side='left')
+            right_expr = self.generate_random_expression(side='right')
+            lines.append(f"  {left_expr} &= {right_expr} \\cr")
+
+        return "\n" + "\n".join(lines) + "\n"
+
+
+import random
+from typing import List, Tuple
+
+
+class ParshapeGenerator:
+    def __init__(self):
+        self.max_lines = 10  # 最大行数
+        self.max_indent = 300  # 最大缩进（单位：pt）
+        self.max_width = 500  # 最大行宽（单位：pt）
+        self.common_units = ['pt', 'mm', 'cm', 'in']  # 常用单位
+
+    def generate_random_length(self) -> str:
+        """生成随机长度值（带单位）"""
+        value = random.randint(0, self.max_width)
+        unit = random.choice(self.common_units)
+        return f"{value}{unit}"
+
+    def generate_line_spec(self) -> Tuple[str, str]:
+        """生成单行的缩进和宽度对"""
+        indent = self.generate_random_length()
+        width = self.generate_random_length()
+        # 确保宽度不小于缩进
+        while int(width[:-2]) < int(indent[:-2]):
+            width = self.generate_random_length()
+        return (indent, width)
+
+    def generate_parshape(self, num_lines: int = None) -> str:
+        """生成完整的\parshape命令"""
+        if num_lines is None:
+            num_lines = random.randint(1, self.max_lines)
+
+        lines = []
+        for _ in range(num_lines):
+            indent, width = self.generate_line_spec()
+            lines.append(f"{indent} {width}")
+
+        return f"{num_lines} {' '.join(lines)}"
+
+
