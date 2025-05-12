@@ -647,8 +647,7 @@ class RandomMacroGenerator:
         content = []
         for _ in range(content_length):
             content.append(random.choice([
-                f"Process parameter: {random.choice(['#1', '#2', '#3'])}",
-                "Perform some operation",
+                f"Perform some operation",
                 "Return a value",
                 "Print a message"
             ]))
@@ -854,5 +853,200 @@ class ThousandMultiplierGenerator:
         multiplier = random.randint(self.min, self.max)
         return str(multiplier * 10)
 
+
+
+
+class RandomMathExpressionGenerator:
+    def __init__(self, max_depth=2, var_prob=0.7, num_range=(-10, 10)):
+        """
+        初始化生成器参数：
+        - max_depth: 表达式嵌套最大深度
+        - var_prob: 使用变量的概率（0-1）
+        - num_range: 数字的随机范围
+        """
+        self.max_depth = max_depth
+        self.var_prob = var_prob
+        self.num_range = num_range
+        self.vars = ['x', 'y', 'z', 'a', 'b', 'c']
+
+    def generate(self, depth=0):
+        """生成随机数学表达式（LaTeX格式）"""
+        if depth >= self.max_depth:
+            return self._generate_simple_term()
+
+        choice = random.random()
+        if choice < 0.3:
+            return self._generate_fraction(depth)
+        elif choice < 0.6:
+            return self._generate_exponent(depth)
+        else:
+            return self._generate_parentheses(depth)
+
+    def _generate_simple_term(self):
+        """生成简单项（数字或变量）"""
+        if random.random() < self.var_prob:
+            return random.choice(self.vars)
+        else:
+            num = random.randint(*self.num_range)
+            return str(num) if num >= 0 else f"({num})"
+
+    def _generate_fraction(self, depth):
+        """生成分式"""
+        numerator = self.generate(depth + 1)
+        denominator = self.generate(depth + 1)
+        return rf"\frac{{{numerator}}}{{{denominator}}}"
+
+    def _generate_exponent(self, depth):
+        """生成指数"""
+        base = self._generate_simple_term()
+        exp = self.generate(depth + 1)
+        return rf"{base}^{{{exp}}}"
+
+    def _generate_parentheses(self, depth):
+        """生成带括号的表达式"""
+        inner = self.generate(depth + 1)
+        return rf"\left({inner}\right)"
+
+    def generate_expression(self):
+        """生成完整表达式（自动添加$$）"""
+        return f"${self.generate()}$"
+
+
+import random
+import string
+from dataclasses import dataclass
+
+
+class RandomSettabsGenerator:
+    def __init__(self, max_cols=5, max_rows=5):
+        self.max_cols = max_cols
+        self.max_rows = max_rows
+        self.words = ["Data", "Sample", "Text", "Value", "Info", "Item", "Demo"]
+
+    def _random_col_count(self):
+        return random.randint(1, self.max_cols)
+
+    def _random_alignment(self):
+        return random.choice([r"\hfil", r"\hfill", ""])
+
+    def _random_content(self, is_sample=False):
+        if is_sample:
+            return random.choice(["Header", "Title", "Label", "Field"])
+        return f'"{random.choice(self.words)} {random.randint(1, 100)}"'
+
+    def _generate_sample_line(self, num_cols):
+        columns = []
+        for _ in range(num_cols):
+            align = self._random_alignment()
+            content = self._random_content(is_sample=True)
+            columns.append(f"{align} {content}".strip())
+        return r"\+ " + " & ".join(columns) + r" \cr"
+
+    def _generate_data_line(self, num_cols):
+        return r"\+ " + " & ".join([self._random_content() for _ in range(num_cols)]) + r" \cr"
+
+    def generate(self):
+        num_cols = self._random_col_count()
+        num_rows = random.randint(1, self.max_rows)
+
+        template = [
+            r"",
+            self._generate_sample_line(num_cols),
+            *[self._generate_data_line(num_cols) for _ in range(num_rows)]
+        ]
+        return "\n".join(template)
+
+
+import random
+import string
+from functools import reduce
+
+
+class HalignGenerator:
+    def __init__(self, max_cols=5, max_rows=5, enable_span=True):
+        self.max_cols = max_cols
+        self.max_rows = max_rows
+        self.enable_span = enable_span
+        self.align_templates = [
+            (r"\hfil#\hfil", "center"),  # 居中对齐
+            (r"\llap{#}\hfil", "left"),  # 左对齐不换行
+            (r"\hfil#\hfill", "right"),  # 右对齐
+            (r"#\quad", "fixed-left"),  # 固定左缩进
+            (r"$\underline{#}$", "underline")  # 带下划线
+        ]
+
+    def _random_content(self, col_type):
+        """生成随机表格内容"""
+        content_pool = {
+            'text': lambda: ''.join(random.choices(string.ascii_letters, k=random.randint(3, 8))),
+            'number': lambda: str(random.randint(1, 1000)),
+            'special': lambda: random.choice(['$', '&', '#', '%'])
+        }
+        return {
+            "center": f" {content_pool['text']().title()} ",
+            "left": content_pool['text']().ljust(8),
+            "right": content_pool['number']().rjust(4),
+            "fixed-left": f"{content_pool['text']()}",
+            "underline": f"\_{content_pool['text']()}\_"
+        }[col_type]
+
+    def _generate_colspec(self, num_cols):
+        """生成列模板规范"""
+        specs = []
+        alignments = random.choices(self.align_templates, k=num_cols)
+        for align, align_type in alignments:
+            specs.append({
+                "template": align,
+                "type": align_type
+            })
+        return specs
+
+    def _generate_row(self, colspec, is_header=False):
+        """生成单行内容"""
+        entries = []
+        span_active = False
+
+        for idx, spec in enumerate(colspec):
+            if span_active:
+                span_active = False
+                continue
+
+            # 随机生成跨列 (5% 概率)
+            if self.enable_span and idx < len(colspec) - 1 and random.random() < 0.05:
+                entries.append(r"\span " + self._random_content(spec["type"]))
+                span_active = True
+            else:
+                entries.append(self._random_content(spec["type"]))
+
+        # 添加表头格式
+        # if is_header:
+        #     return [f"\\bf {item}" for item in entries]
+        return entries
+
+    def generate(self):
+        """生成完整 halign 代码"""
+        num_cols = random.randint(1, self.max_cols)
+        num_rows = random.randint(1, self.max_rows)
+        colspec = self._generate_colspec(num_cols)
+
+        # 构建列模板
+        col_templates = " &\n".join([spec["template"] for spec in colspec])
+
+        # 生成表格内容
+        rows = [
+            " & ".join(self._generate_row(colspec, is_header=True)) + r" \cr"
+        ]
+        for _ in range(num_rows):
+            rows.append(" & ".join(self._generate_row(colspec)) + r" \cr")
+
+        # 添加横线 (30% 概率)
+        if random.random() < 0.3:
+            rows.insert(1, r"\multispan{%d}\hrulefill \cr" % num_cols)
+
+        return (
+                r"%" + "\n" +
+                col_templates + r" \cr" + "\n" +
+                "\n".join(rows)
+        )
 
 

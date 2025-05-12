@@ -165,19 +165,22 @@ class Arrows(MathLatter):
 
 
 
+class Delimiters:
+    def __init__(self):
+        self.form1 = [
+           "\\lbrack", "\\lbrace",  "\\rbrack", "\\rbrace", "\\vert",
+            "\\lceil",  "\\rceil", "\\lfloor", "\\rfloor"
+        ]
 
+    def use_form1(self):
+        case = random.choice(self.form1)
+        case1 = "%s" % (case)
+        return case1
 
-
-
-
-
-# 这个比较复杂，之后仔细修改
-# class Delimiters(MathLatter):
-#     def __init__(self):
-#         self.delimiters = {
-#             "[": "\\lbrack", "{": "\\lbrace", "]": "\\rbrack", "}": "\\rbrace", "|": "\\vert",
-#             "⌈": "\\lceil", "⌉": "\\rceil", "⌊": "\\lfloor", "⌋": "\\rfloor"
-#         }
+    def gen_something(self):
+        tex_text = '$\n'
+        tex_text += self.use_form1() + '\n'
+        return tex_text + '$'
 
 
 class EveryTimeInsertions:
@@ -267,18 +270,97 @@ class ElementaryMathControlSequences:
         return tex_text + '$'
 
 
-# 包含复杂嵌套情况，后面再修改
-# class NonItalicFunctionNames:
-#     def __init__(self):
-#         self.functions = ['\\arccos', '\\cos', '\\csc', '\\exp', '\\ker',
-#                           '\\limsup', '\\min', '\\sinh', '\\arcsin', '\\cosh',
-#                           '\\deg', '\\gcd', '\\lg', '\\ln', '\\Pr', '\\sup',
-#                           '\\arctan', '\\cot', '\\det', '\\hom', '\\lim',
-#                           '\\log', '\\sec', '\\tan', '\\arg', '\\coth',
-#                           '\\dim', '\\inf', '\\liminf', '\\max', '\\sin',
-#                           '\\tanh', '\\pmod', '\\bmod', '\\mathop'
-#                           ]
+#包含复杂嵌套情况，后面再修改
+class NonItalicFunctionNames:
+    def __init__(self):
+        self.form1 = ['\\arccos', '\\cos', '\\csc', '\\exp', '\\ker',
+                         '\\sinh', '\\arcsin', '\\cosh',
+                          '\\lg', '\\ln', '\\arctan', '\\cot',
+                          '\\log', '\\sec', '\\tan', '\\arg', '\\coth', '\\sin',
+                          '\\tanh' ,'\\pmod'
+                          ]
+        self.form2 = ["\\limsup" , "\\lim" , "\\liminf"
+                      ]
+        self.form3 = ["\\min" , "\\gcd" , "\\hom" , '\\max'
+                      ]
+        self.form4 = ["\\Pr"
+                      ]
+        self.form5 = ["\\det" , "deg"
+                      ]
+        self.form6 = ["\\dim"
+                      ]
+        self.form7 = ["\\bmod"
+                      ]
+        self.form8 = ["\\mathop"
+                      ]
 
+        self.form9 = [ '\\sup',  '\\inf',
+                      ]
+
+        self.any_text = random_input.AnyText()
+
+
+    def use_form1(self, text):
+        case = random.choice(self.form1)
+        case1 = "%s{%s}" % (case, text)
+        return case1
+
+    def use_form2(self, text):
+        case = random.choice(self.form2)
+        case2 = "x \to a"
+        case1 = "%s_{%s}%s" % (case, case2,text)
+        return case1
+
+    def use_form3(self, text1 ,text2):
+        case = random.choice(self.form3)
+        case1 = "%s(%s,%s)" % (case, text1, text2)
+        return case1
+
+    def use_form4(self, text):
+        case = random.choice(self.form4)
+        case1 = "%s(%s)" % (case, text)
+        return case1
+
+    def use_form5(self, text):
+        case = random.choice(self.form5)
+        case1 = "%s %s" % (case, text)
+        return case1
+
+    def use_form6(self, text):
+        case = random.choice(self.form6)
+        case1 = "%s %s" % (case, text)
+        return case1
+
+    def use_form7(self, text):
+        case = random.choice(self.form7)
+        case1 = "%s %s %s" % (text,case, text)
+        return case1
+
+    def use_form8(self, text):
+        case = random.choice(self.form8)
+        case1 = "%s{%s}" % (case, text)
+        return case1
+
+    def use_form9(self):
+        case = random.choice(self.form9)
+        case1 = "%s" % (case)
+        return case1
+
+
+
+
+    def gen_something(self):
+        tex_text = '$\n'
+        tex_text += self.use_form1(self.any_text.simple_string()) + '\n'
+        tex_text += self.use_form2(self.any_text.simple_string()) + '\n'
+        tex_text += self.use_form3(self.any_text.simple_string(), self.any_text.simple_string()) + '\n'
+        tex_text += self.use_form4(self.any_text.simple_string()) + '\n'
+        tex_text += self.use_form5(self.any_text.simple_string()) + '\n'
+        tex_text += self.use_form6(self.any_text.simple_string()) + '\n'
+        tex_text += self.use_form7(self.any_text.simple_string()) + '\n'
+        tex_text += self.use_form8(self.any_text.simple_string()) + '\n'
+        tex_text += self.use_form9() + '\n'
+        return tex_text + '$'
 
 
 class FootnotesInsertionsAndUnderlines:
@@ -460,217 +542,84 @@ class TEXFontsAndMagnification:
         return tex_text
 
 
-#
 
-##需要修改。表格
-# class AlignmentDisplays:
-#     def __init__(self):
-#         self.simple_line = ["\\+", "&", "\\cr"]
-#         self.settabs = ["\\settabs", "\\columns"]
-#         self.openup = ["\\openup"]
-#         self.tabskip = ["\\tabskip"]
-#
-#         self.halign_form = ["\\halign", "to"]         # 表格头
-#         self.form1 = ["\\omit",  "\\span",  "\\hidewidth", "\\crcr", "\\cr"]
-#         self.form2 = ["\\noalign"]
-#         self.form3 = ["\\multispan"]
-#
-#         self.text = random_input.AnyText()
-#         self.number = random_input.AnyNumber()
-#         self.dimen = random_input.DimensionsSpacingAndGlue()
-#
-#     # \+ ... \r
-#     def gen_random_simpleline(self, num_columns):
-#         num_columns = int(num_columns)
-#         # 随机生成列宽度（1.0 到 3.0 之间的浮点数）
-#         widths = [round(random.uniform(1.0, 3.0), 1) for _ in range(num_columns)]
-#         # 随机选择对齐方式（左对齐、居中对齐、右对齐）
-#         alignments = ["左对齐", "居中对齐", "右对齐"]
-#         selected_alignments = [random.choice(alignments) for _ in range(num_columns)]
-#         # 构建 simple line
-#         simple_line = r"\settabs \+ "
-#         for width, alignment in zip(widths, selected_alignments):
-#             if alignment == "左对齐":
-#                 simple_line += rf"\hskip {width}in & "
-#             elif alignment == "居中对齐":
-#                 simple_line += rf"\hfil \hskip {width}in \hfil & "
-#             elif alignment == "右对齐":
-#                 simple_line += rf"\hskip {width}in \hfil & "
-#         # 去掉最后一个多余的 "& " 并添加 \cr
-#         simple_line = simple_line.rstrip("& ") + r" \cr"
-#         return simple_line
-#
-#     def use_settabls(self, any_number, any_lines):
-#         case1 = "%s %s %s" % (self.settabs[0], any_number, self.settabs[1])
-#         case2 = "%s %s" % (self.settabs[0], any_lines)
-#         return random.choice([case1, case2])
-#
-#     def use_openup(self, any_dimen):
-#         return "%s %s" % (self.openup[0], any_dimen)
-#
-#     def use_tabskip(self, any_glue):
-#         return "%s=%s" % (self.tabskip[0], any_glue)
-#
-#     def use_form1(self):
-#         return random.choice(self.form1)
-#
-#     def use_form2(self, any_text):          # vmode material
-#         return "%s{%s}" % (self.form2[0], any_text)
-#
-#     def use_form3(self, any_number):
-#         return "%s %s" % (self.form3[0], any_number)
-#
-#     def gen_random_table(self, rows, cols, any_dimen, any_text):
-#         """
-#         随机生成一个包含指定命令的 Plain TeX 表格。
-#         参数:
-#             rows (int): 表格的行数。
-#             cols (int): 表格的列数。
-#         返回:
-#             str: 生成的 Plain TeX 表格代码。
-#         """
-#         # 定义可用的命令及其参数
-#         commands = [
-#             "\\omit",  # 忽略当前列的格式
-#             "\\span",  # 跨列
-#             "\\hidewidth",  # 隐藏宽度
-#             "\\crcr",  # 换行
-#             "\\cr",  # 换行
-#             "\\noalign",  # 插入额外内容
-#             "\\multispan",  # 跨多列
-#         ]
-#         rows = int(rows)
-#         cols = int(cols)
-#
-#         # 生成列格式
-#         col_format = " & ".join(["c"] * cols)  # 每列居中对齐
-#
-#         # 生成表格内容
-#         table_head = ['']
-#         case1 = "%s {{ {%s} \\cr\n" % (self.halign_form[0], col_format)
-#         case2 = "%s %s %s {{ {%s} \\cr\n" % (self.halign_form[0], self.halign_form[1], any_dimen, col_format)
-#         table = random.choice([case1, case2])
-#         # table = f"\\halign to 1sp {{ {col_format} \\cr\n"
-#         for row in range(rows):
-#             row_content = []
-#             for col in range(cols):
-#                 # 随机选择一个命令
-#                 command = random.choice(commands)
-#
-#                 # 根据命令生成内容
-#                 if command == "\\omit":
-#                     row_content.append("\\omit " + any_text)
-#                 elif command == "\\span":
-#                     row_content.append(
-#                         "\\span " + str(random.randint(1, cols - col)) + " " + any_text)
-#                 elif command == "\\hidewidth":
-#                     row_content.append("\\hidewidth " + random.choice(["W", "H", "I"]))
-#                 elif command == "\\multispan":
-#                     row_content.append(
-#                         "\\multispan " + str(random.randint(1, cols - col)) + " " + any_text)
-#                 else:
-#                     row_content.append(any_text)
-#
-#             # 随机插入 \\noalign
-#             if random.random() < 0.3:  # 30% 的概率插入 \\noalign
-#                 table += "\\noalign{" + random.choice(["*", "\\hrule", "\\vskip 5pt"]) + "}\n"
-#
-#             # 添加行内容
-#             table += " & ".join(row_content) + " \\cr\n"
-#
-#         table += "}"
-#         return table
-#
-#     # def gen_random_table(self, table_num, any_text, any_number):
-#     #     res = ''
-#     #     for i in range(table_num):
-#     #         case1 = self.use_form1()
-#     #         case2 = self.use_form2(any_text)
-#     #         case3 = self.use_form3(any_number)
-#     #         res += random.choice([case1, case2, case3]) + '\n'
-#     #     return res
-#     #
-#     # def table_head_form(self, any_table, any_dimen):
-#     #
-#     #     return random.choice([case1, case2])
-#
-#     def random_tex_table(self, rows, cols):
-#         """
-#         随机生成一个包含指定命令的 Plain TeX 表格。
-#
-#         参数:
-#             rows (int): 表格的行数。
-#             cols (int): 表格的列数。
-#
-#         返回:
-#             str: 生成的 Plain TeX 表格代码。
-#         """
-#         # 定义可用的命令及其参数
-#         commands = [
-#             "\\omit",  # 忽略当前列的格式
-#             "\\span",  # 跨列
-#             "\\hidewidth",  # 隐藏宽度
-#             "\\crcr",  # 换行
-#             "\\cr",  # 换行
-#             "\\noalign",  # 插入额外内容
-#             "\\multispan",  # 跨多列
-#         ]
-#
-#         # 生成合法的列格式，每列包含一个 # 占位符
-#         col_format = " & ".join(["c#"] * cols)  # 每列居中对齐，并包含 # 占位符
-#
-#         # 生成表格内容
-#         table = f"\\halign to 1sp {{ {col_format} \\cr\n"
-#         for row in range(rows):
-#             row_content = []
-#             col = 0
-#             while col < cols:
-#                 # 随机选择一个命令
-#                 command = random.choice(commands)
-#
-#                 # 根据命令生成内容
-#                 if command == "\\omit":
-#                     row_content.append("\\omit " + random.choice(["A", "B", "C", "D"]))
-#                     col += 1
-#                 elif command == "\\span":
-#                     span_cols = random.randint(1, cols - col)
-#                     row_content.append(f"\\span {span_cols} " + random.choice(["X", "Y", "Z"]))
-#                     col += span_cols
-#                 elif command == "\\hidewidth":
-#                     row_content.append("\\hidewidth " + random.choice(["W", "H", "I"]))
-#                     col += 1
-#                 elif command == "\\multispan":
-#                     span_cols = random.randint(1, cols - col)
-#                     row_content.append(f"\\multispan {span_cols} " + random.choice(["M", "N", "O"]))
-#                     col += span_cols
-#                 else:
-#                     row_content.append(random.choice(["A", "B", "C", "D"]))
-#                     col += 1
-#
-#             # 随机插入 \\noalign
-#             if random.random() < 0.3:  # 30% 的概率插入 \\noalign
-#                 table += "\\noalign{" + random.choice(["*", "\\hrule", "\\vskip 5pt"]) + "}\n"
-#
-#             # 添加行内容
-#             table += " & ".join(row_content) + " \\cr\n"
-#
-#         table += "}"
-#         return table
-#
-#     def gen_something(self):
-#         tex_text = ''
-#         tex_text += self.random_tex_table(3, 5) + '\n'
-#         # tex_text += self.gen_random_table(
-#         #     # self.number.uint_number(), self.number.uint_number(),
-#         #     3,3,
-#         #     self.dimen.gen_any_stand_dimen(),
-#         #     self.text.simple_string()) + '\n'
-#         # tex_text += self.use_settabls(self.number.uint_number(),
-#         #                               self.gen_random_simpleline(self.number.uint_number())) + '\n'
-#         # tex_text += self.use_openup(self.dimen.gen_any_stand_dimen()) + '\n'
-#         # tex_text += self.use_tabskip(self.dimen.gen_any_stand_glue()) + '\n'
-#         return tex_text
-#
+
+#需要修改。表格
+class AlignmentDisplays:
+    def __init__(self):
+        self.form1 = ["\\settabs", "\\columns"]
+        self.form2 = ["\\settabs"]
+        self.form3 = ["\\halign"]
+        self.form4 = ["\\openup" , "\\tabskip"]
+        self.form5 = ["\\noalign"]
+        self.noalign = ["\\hrule" , "\\vrule" , "\\vskip 5pt" , "\\hfil Note"]
+        self.form6 = ["\\omit"]
+        self.form7 = ["\\span"]
+        self.form8 = ["\\multispan"]
+        self.form9 = ["\\hidewidth"]
+
+        self.text = random_input.AnyText()
+        self.number = random_input.AnyNumber()
+        self.dimen = random_input.DimensionsSpacingAndGlue()
+        self.settabs = random_input.RandomSettabsGenerator()
+        self.halign = random_input.HalignGenerator()
+        self.dimen_space = random_input.DimensionsSpacingAndGlue()
+
+    def use_form1(self, number):
+        case = "%s %s %s" % (self.form1[0], number, self.form1[1])
+        return case
+
+    def use_form2(self, settab):
+        case = "%s %s" % (self.form2[0], settab)
+        return case
+
+    def use_form3(self, halign):
+        case = "%s{%s}" % (self.form3[0], halign)
+        return case
+
+    def use_form4(self, dimen):
+        case = random.choice(self.form4)
+        case = "%s %s" % (case, dimen)
+        return case
+
+    def use_form5(self):
+        case1 = random.choice(self.noalign)
+        case = "\\halign{\n\\hfil#\\hfil & \\hfil#\\hfil\\cr\nHeader1 & Header2 \\cr\n%s {%s}\nData1 & Data2 \\cr}" % (self.form5[0], case1)
+        return case
+
+    def use_form6(self):
+
+        case = "\\halign{\n\\hfil#\\hfil & \\hfil#\\hfil\\cr\nHeader1 & Header2 \\cr\n%s\\hfil 自定义内容 \\hfil & 正常内容 \\cr\n}" % (self.form6[0])
+        return case
+
+    def use_form7(self):
+
+        case = "\\halign{\n\\hfil#\\hfil & \\hfil#\\hfil & \\hfil#\\hfil\\cr\n %s 跨两列内容 & \\cr\n  A & B & C \\cr\n}" % (self.form7[0])
+        return case
+
+    def use_form8(self):
+
+        case = "\\halign{\n\\hfil#\\hfil & \\hfil#\\hfil & \\hfil#\\hfil \\cr\n%s3 跨三列标题 \\cr\nA & B & C \\cr\n}" % (self.form8[0])
+        return case
+
+    def use_form9(self):
+
+        case = "\\halign{\n\\hfil#\\hfil & #\\hfil \\cr\n正常列 & %s [紧凑内容] \\cr\n}" % (self.form9[0])
+        return case
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1(self.number.uint_number()) + '\n'
+        tex_text += self.use_form2(self.settabs.generate()) + '\n'
+        tex_text += self.use_form3(self.halign.generate()) + '\n'
+        tex_text += self.use_form4(self.dimen_space.gen_any_stand_dimen()) + '\n'
+        tex_text += self.use_form5() + '\n'
+        tex_text += self.use_form6() + '\n'
+        tex_text += self.use_form7() + '\n'
+        tex_text += self.use_form8() + '\n'
+        tex_text += self.use_form9() + '\n'
+        return tex_text
+
 
 
 class Boxes:
@@ -872,92 +821,92 @@ class HeadersFootersAndPageNumbers:
 
 
 
-# # #宏定义。 需要修改
-# # class MacroDefinitions:
-# #     def __init__(self):
-# #         self.form1 = [
-# #             "\\def", "\\gdef", "\\edef", "\\xdef"
-# #         ]
-# #         self.form2 = [
-# #             "\\cs", "\\let"
-# #         ]
-# #         self.form3 = [
-# #             "\\long", "\\outer", "\\global"
-# #         ]
-# #         self.form4 = [
-# #             "\\noexpand"
-# #         ]
-# #         self.form5 = [
-# #             "\\expandafter"
-# #         ]
-# #         self.form6 = [
-# #             "\\futurelet"
-# #         ]
-# #         self.form7 = [
-# #             "\\csname", "\\endcsname"
-# #         ]
-# #         self.form8 = [
-# #             "\\string", "\\"
-# #         ]
-# #         self.form9 = [
-# #             "\\number"
-# #         ]
-# #         self.text = random_input.AnyText()
-# #         self.number = random_input.AnyNumber()
-# #         self.dimen_space = random_input.DimensionsSpacingAndGlue()
-# #         self.macro= random_input.RandomMacroGenerator()
-# #
-# #     def use_form1(self, any_macro):
-# #         case = random.choice(self.form1)
-# #         case1 = "%s %s" % (case, any_macro)
-# #         return case1
-# #
-# #     def use_form2(self, text):
-# #         case1 = "%s %s = %s" % (self.form2[1], self.form2[0], text)
-# #         return case1
-# #
-# #     def use_form3(self, any_macro):
-# #         case = random.choice(self.form3)
-# #         case1 = "%s %s %s" % (case, self.form1[0], any_macro)
-# #         return case1
-# #
-# #     def use_form4(self):
-# #         case1 = "\\def\\foo{Hello, World!}\\par %s\\foo" % (self.form4[0])
-# #         return case1
-# #
-# #     def use_form5(self):
-# #         case1 = "\\def\\a{Hello}\\def\\b{\\a}%s\\b\\relax" % (self.form5[0])
-# #         return case1
-# #
-# #     def use_form6(self):
-# #         case1 = "%s\\next\\tokenA\\tokenB" % (self.form6[0])
-# #         return case1
-# #
-# #     def use_form7(self, text):
-# #         case1 = "%s %s %s" % (self.form7[0], text, self.form7[1])
-# #         return case1
-# #
-# #     def use_form8(self, text):
-# #         case1 = "%s%s%s" % (self.form8[0], self.form8[1], text)
-# #         return case1
-# #
-# #     def use_form9(self, any_number):
-# #         case1 = "%s%s" % (self.form9, any_number)
-# #         return case1
-# #
-# #     def gen_something(self):
-# #         tex_text = ''
-# #         tex_text += self.use_form1(self.macro.gen_macro()) + '\n'
-# #         tex_text += self.use_form2(self.text.simple_string()) + '\n'
-# #         tex_text += self.use_form3(self.macro.gen_macro()) + '\n'
-# #         tex_text += self.use_form4() + '\n'
-# #         tex_text += self.use_form5() + '\n'
-# #         tex_text += self.use_form6() + '\n'
-# #         tex_text += self.use_form7(self.text.simple_string()) + '\n'
-# #         tex_text += self.use_form8(self.text.simple_string()) + '\n'
-# #         tex_text += self.use_form9(self.number.uint_number()) + '\n'
-# #
-# #         return tex_text
+#宏定义。 需要修改
+class MacroDefinitions:
+    def __init__(self):
+        self.form1 = [
+            "\\def", "\\gdef", "\\edef", "\\xdef"
+        ]
+        self.form2 = [
+            "\\cs", "\\let"
+        ]
+        self.form3 = [
+            "\\long", "\\outer", "\\global"
+        ]
+        self.form4 = [
+            "\\noexpand"
+        ]
+        self.form5 = [
+            "\\expandafter"
+        ]
+        self.form6 = [
+            "\\futurelet"
+        ]
+        self.form7 = [
+            "\\csname", "\\endcsname"
+        ]
+        self.form8 = [
+            "\\string", "\\"
+        ]
+        self.form9 = [
+            '\\number'
+        ]
+        self.text = random_input.AnyText()
+        self.number = random_input.AnyNumber()
+        self.dimen_space = random_input.DimensionsSpacingAndGlue()
+        self.macro= random_input.RandomMacroGenerator()
+
+    def use_form1(self, any_macro):
+        case = random.choice(self.form1)
+        case1 = "%s %s" % (case, any_macro)
+        return case1
+
+    def use_form2(self, text):
+        case1 = "%s %s = %s" % (self.form2[1], self.form2[0], text)
+        return case1
+
+    def use_form3(self, any_macro):
+        case = random.choice(self.form3)
+        case1 = "%s %s %s" % (case, self.form1[0], any_macro)
+        return case1
+
+    def use_form4(self):
+        case1 = "\\def\\foo{Hello, World!}\\par %s\\foo" % (self.form4[0])
+        return case1
+
+    def use_form5(self):
+        case1 = "\\def\\a{Hello}\\def\\b{\\a}%s\\b\\relax" % (self.form5[0])
+        return case1
+
+    def use_form6(self):
+        case1 = "\def\\tokenA{这是A}\n\def\\tokenB{这是B}\n\def\\next{}\n  %s\\next\\tokenA\\tokenB" % (self.form6[0])
+        return case1
+
+    def use_form7(self, text):
+        case1 = "%s %s %s" % (self.form7[0], text, self.form7[1])
+        return case1
+
+    def use_form8(self, text):
+        case1 = "%s%s%s" % (self.form8[0], self.form8[1], text)
+        return case1
+
+    def use_form9(self, any_number):
+        case1 = "%s%s" % (self.form9[0], any_number)
+        return case1
+
+    def gen_something(self):
+        tex_text = ''
+        tex_text += self.use_form1(self.macro.gen_macro()) + '\n'
+        tex_text += self.use_form2(self.text.simple_string()) + '\n'
+        tex_text += self.use_form3(self.macro.gen_macro()) + '\n'
+        tex_text += self.use_form4() + '\n'
+        tex_text += self.use_form5() + '\n'
+        tex_text += self.use_form6() + '\n'
+        tex_text += self.use_form7(self.text.simple_string()) + '\n'
+        tex_text += self.use_form8(self.text.simple_string()) + '\n'
+        tex_text += self.use_form9(self.number.uint_number()) + '\n'
+
+        return tex_text
 
 
 class Conditionals:
