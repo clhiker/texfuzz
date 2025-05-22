@@ -407,19 +407,19 @@ class RandomEquationGenerator:
         return tex_code
 
 
-if __name__ == '__main__':
-    test_any_box_rule = AnyBoxRule()
-    # 测试随机生成 box
-    print("Random Box:")
-    print(test_any_box_rule.any_box())
-
-    # 测试随机生成 rule
-    print("\nRandom Rule:")
-    print(test_any_box_rule.any_rule())
-
-    # 测试随机生成 box 和 rule 的组合
-    print("\nRandom Box with Rule:")
-    print(test_any_box_rule.any_box_rule())
+# if __name__ == '__main__':
+#     test_any_box_rule = AnyBoxRule()
+#     # 测试随机生成 box
+#     print("Random Box:")
+#     print(test_any_box_rule.any_box())
+#
+#     # 测试随机生成 rule
+#     print("\nRandom Rule:")
+#     print(test_any_box_rule.any_rule())
+#
+#     # 测试随机生成 box 和 rule 的组合
+#     print("\nRandom Box with Rule:")
+#     # print(test_any_box_rule.any_box_rule())
 
 
 class RandomMathFormulaGenerator:
@@ -511,7 +511,7 @@ class AlignedFormulaGenerator:
        
         for i, formula in enumerate(formulas):
             if with_number:
-                print(tex_formula)
+                # print(tex_formula)
                 tex_formula += f"  {formula} & ({i+1})\\cr\n"  # 添加编号
             else:
                 tex_formula += f"  {formula} \\cr\n"  # 无编号
