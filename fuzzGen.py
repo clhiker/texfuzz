@@ -5,6 +5,7 @@ class RandomGen:
         self.tex_text = ''
 
     def random_gen(self):
+        self.tex_text = ''
         class_names = [name for name in dir(texDef) if isinstance(getattr(texDef, name), type)]
         objects = [getattr(texDef, name)() for name in class_names]
         for obj in objects:

@@ -90,17 +90,16 @@ class TexFuzz:
     def fuzz_multi_tex(self):
         with open('out.log', 'w') as f:
             for name in tqdm(os.listdir(self.seeds_dir)):
-                path = os.path.join(self.seeds_dir, name)
-                cmd = ['/usr/bin/xetex', path]
+                cmd = ['xetex', name]
                 try:
-                    res = subprocess.run(cmd, stdout=PIPE, stderr=PIPE, timeout=5)
+                    res = subprocess.run(cmd, cwd=self.seeds_dir, stdout=PIPE, stderr=PIPE, timeout=5)
                     if res.returncode != 0:
-                        f.write(path + '\n')
+                        f.write(name + '\n')
                         f.write(f'{res.returncode}\n')
                         f.write(res.stderr.decode() + '\n')
                         f.write(res.stdout.decode() + '\n')
                 except TimeoutExpired as e:
-                    f.write(f'{path}\n')
+                    f.write(f'{name}\n')
 
     def fuzz_tex(self):
         os.system('cd seeds && xetex test.tex')
@@ -109,7 +108,7 @@ class TexFuzz:
 if __name__ == '__main__':
     tex_fuzz = TexFuzz('multi-seeds')
     # tex_fuzz.gen_tex_text()
-    tex_fuzz.gen_multi_tex_text(10)
+    tex_fuzz.gen_multi_tex_text(100)
     tex_fuzz.fuzz_multi_tex()
     # tex_fuzz.diff_testing()
     # tex_fuzz.fuzz_tex()

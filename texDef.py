@@ -124,7 +124,7 @@ class Relations(MathLatter):
             "\\smile", "\\mid", "\\doteq", "\\frown", "\\parallel", "\\perp",
             "\\propto", "\\not\\equiv", "\\notin", "\\ni", "\\owns", "\\vdash", "\\dashv",
             "\\models", "\\smile", "\\mid", "\\doteq", "\\frown", "\\parallel", "\\perp",
-             "\\propto", "\\notequiv", "\\notin", "\\ne"
+             "\\propto", "\\not\\equiv", "\\notin", "\\ne"
         ]
         ## \not 否定的用法？
 
@@ -371,13 +371,13 @@ class FootnotesInsertionsAndUnderlines:
         self.insert_end = ['\\endinsert']
         self.underbar = ['\\underbar']
 
-    def use_form1(self, text1, text2):
-        case1 = "%s %s{%s}" % (self.footnote[0], text1, text2)
-        return case1
+    # def use_form1(self, text1, text2):
+    #     case1 = "%s{%s{%s}}" % (self.footnote[0], text1, text2)
+    #     return case1
 
     def use_form2(self, text):          # vmode material
         case = random.choice(self.insert_begin)
-        case1 = "%s %s %s" % (case, text, self.insert_end[0])
+        case1 = "%s \\vbox{%s} %s" % (case, text, self.insert_end[0])
         return case1
 
     def use_form3(self, text):
@@ -386,7 +386,7 @@ class FootnotesInsertionsAndUnderlines:
 
     def gen_something(self):
         tex_text = ''
-        tex_text += self.use_form1(self.text.simple_string(), self.text.simple_string()) + '\n'
+
         tex_text += self.use_form2(self.text.simple_string()) + '\n'
         tex_text += self.use_form3(self.text.simple_string()) + '\n'
         return tex_text
@@ -460,7 +460,7 @@ class FillsLeadersAndEllipses:
         return random.choice(self.fills)
 
     def use_form3(self, box, glue):
-        case1 = "%s %s %s %s" % (self.leaders_skip[0], box, self.leaders_skip[1], glue)
+        case1 = "%s %s %s %s" % (self.leaders_skip[0],  box, self.leaders_skip[1], glue)
         return case1
 
     def use_form4(self, box):
@@ -1004,7 +1004,7 @@ class Conditionals:
 
         tex_text += self.use_form8(self.number.uint_number(), self.text.simple_string(), self.text.simple_string(),
                                    self.text.simple_string()) + '\n'
-        tex_text += self.use_form9(self.text.simple_string(), self.text.simple_string()) + '\n'
+        # tex_text += self.use_form9(self.text.simple_string(), self.text.simple_string()) + '\n'
         # tex_text += self.use_form10() + '\n'
 
 

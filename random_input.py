@@ -128,7 +128,7 @@ class AnyBoxRule:
         if random.choice([True, False]):
             register = random.randint(0, 255)  # 确保寄存器编号在 0 到 255 之间
             # 生成代码，确保 \box 在最前面定义
-            return fr"\box{register} \setbox{register}={box_type}{{{content}}}"
+            return fr"\box{register}"
         else:
             # 直接生成盒子代码
             return fr"{box_type}{{{content}}}"
